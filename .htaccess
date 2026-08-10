@@ -4,14 +4,14 @@
 # ==========================================================================
 
 # --- Forcer HTTPS et le domaine sans www -----------------------------------
-# À ACTIVER une fois le nom de domaine branché et le certificat SSL installé
-# depuis le panneau Hostinger (retirer les # des 4 lignes ci-dessous).
-# <IfModule mod_rewrite.c>
-#   RewriteEngine On
-#   RewriteCond %{HTTPS} off [OR]
-#   RewriteCond %{HTTP_HOST} ^www\. [NC]
-#   RewriteRule ^ https://alexowebdesign.com%{REQUEST_URI} [L,R=301]
-# </IfModule>
+# Actif depuis l'installation du certificat SSL.
+# En cas de « trop de redirections », remettre les # devant les 6 lignes.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} off [OR]
+  RewriteCond %{HTTP_HOST} ^www\. [NC]
+  RewriteRule ^ https://alexowebdesign.com%{REQUEST_URI} [L,R=301]
+</IfModule>
 
 # --- Page d'erreur personnalisée -------------------------------------------
 ErrorDocument 404 /404.html
