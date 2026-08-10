@@ -49,8 +49,13 @@ Deux options :
 
 ## À compléter
 
+Domaine : **alexowebdesign.com** — déjà renseigné dans `.htaccess`, `robots.txt`, `sitemap.xml` et les balises `canonical` / `og:` de `index.html`.
+
+Le site est en **pré-lancement** : chaque page porte une balise `noindex`, il est donc visible par qui a l'adresse mais absent de Google. C'est volontaire tant que les mentions légales sont incomplètes.
+
 - [ ] Champs `[À COMPLÉTER]` dans `mentions-legales.html` et `cgv.html` (nom, adresse, SIRET) une fois l'entreprise immatriculée
-- [ ] Photo dans la section « Qui je suis » (`index.html`, bloc `.portrait-frame`)
+- [ ] Retirer les balises `noindex` (`index.html`, `cgv.html`, `mentions-legales.html`) — **seulement après** le point ci-dessus
+- [ ] Activer la redirection HTTPS dans `.htaccess` une fois le certificat SSL actif
 - [ ] Confirmer FormSubmit au premier envoi réel du formulaire de maquette
-- [ ] Remplacer `alexo.fr` par le vrai domaine dans `.htaccess`, `robots.txt`, `sitemap.xml` et les balises `og:`/`canonical`
+- [ ] Photo dans la section « Qui je suis » (`index.html`, bloc `.portrait-frame`)
 - [ ] Police du logo à la place du placeholder Instrument Serif (variable `--font-display`)

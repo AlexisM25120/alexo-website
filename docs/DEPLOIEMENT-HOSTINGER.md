@@ -53,22 +53,29 @@ Utile si le déploiement Git coince, ou pour une correction urgente.
 
 Dans cet ordre — les étapes 2 et 3 dépendent l'une de l'autre.
 
-1. **Nom de domaine** — hPanel → *Domaines*. Soit tu l'achètes chez Hostinger (souvent inclus la 1re année), soit tu pointes un domaine acheté ailleurs vers les DNS Hostinger. Compte jusqu'à 24 h de propagation.
+1. **Nom de domaine** — `alexowebdesign.com`, réservé chez Hostinger. hPanel → *Sites web* : le domaine doit apparaître en face de l'hébergement. Acheté chez Hostinger, le rattachement est automatique — rien à faire côté DNS.
 2. **Certificat SSL** — hPanel → *Sécurité* → **SSL** → installer le certificat gratuit. Attends qu'il soit **actif** avant l'étape suivante.
-3. **Forcer HTTPS** — seulement une fois le SSL actif : dans `.htaccess`, décommente le bloc de redirection en haut du fichier (retire les `#` des 6 lignes) et remplace `alexo.fr` par ton domaine. **Décommenter avant que le SSL soit actif provoque une boucle de redirection et rend le site inaccessible.**
+3. **Forcer HTTPS** — seulement une fois le SSL actif : dans `.htaccess`, décommente le bloc de redirection en haut du fichier (retire les `#` des 6 lignes). Le domaine y est déjà renseigné. **Décommenter avant que le SSL soit actif provoque une boucle de redirection et rend le site inaccessible.**
 4. **Formulaire de maquette** — envoie une première demande depuis le site en ligne : FormSubmit envoie un e-mail de confirmation à `alexo.webdesign@gmail.com`. **Tant que tu n'as pas cliqué sur ce lien, aucun lead ne t'arrivera.**
-5. **Google** — inscris le site sur [Google Search Console](https://search.google.com/search-console) et soumets `sitemap.xml`.
 
-## À faire avant d'ouvrir le site au public
+## Pré-lancement : le site est hors de Google
 
-- [ ] Champs `[À COMPLÉTER]` dans `mentions-legales.html` et `cgv.html` : nom, adresse, SIRET. **Obligatoire** (art. 6 III de la LCEN) dès que le site est accessible publiquement.
-- [ ] Remplacer `alexo.fr` par le vrai domaine dans `.htaccess`, `robots.txt`, `sitemap.xml` et les balises `og:` / `canonical` de `index.html`.
+Tant que l'entreprise n'est pas immatriculée, les mentions légales et les CGV sont incomplètes — le site ne doit donc pas être référencé. Chaque page porte une balise `noindex` : le site est **accessible à qui a l'adresse, absent des résultats Google**.
 
-Pour repérer ce qui reste :
+`robots.txt` reste volontairement en `Allow: /`. Un `Disallow: /` bloquerait le crawl, donc la lecture du `noindex`, et l'URL pourrait ressortir malgré tout dans les résultats. Pour être sûr d'être hors index, il faut laisser le robot entrer et lui montrer le `noindex`.
+
+### Lever le pré-lancement (une fois le SIRET reçu)
+
+1. Compléter les champs `[À COMPLÉTER]` dans `mentions-legales.html` et `cgv.html` : nom, adresse, SIRET. **Obligatoire** (art. 6 III de la LCEN) dès que le site est référencé.
+2. Retirer la balise `<meta name="robots" content="noindex" />` et son commentaire `PRÉ-LANCEMENT` dans `index.html`, `cgv.html` et `mentions-legales.html`. Ne pas y toucher dans `404.html` ni dans `demos/` : le `noindex` y est permanent et voulu.
+3. Ne rien changer dans `robots.txt`.
+4. Déployer, puis inscrire le site sur [Google Search Console](https://search.google.com/search-console) et soumettre `sitemap.xml`.
+
+Pour vérifier ce qui reste :
 
 ```bash
 grep -rn "À COMPLÉTER" *.html
-grep -rln "alexo\.fr" .
+grep -rn "PRÉ-LANCEMENT" *.html
 ```
 
 ## Mettre à jour le site plus tard

@@ -13,4 +13,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://alexo.fr/sitemap.xml
+Sitemap: https://alexowebdesign.com/sitemap.xml
