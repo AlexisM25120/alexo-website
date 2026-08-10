@@ -34,6 +34,63 @@ Un push sur `main` déclenche alors le déploiement dans la minute. GitHub montr
 
 ⚠️ Les libellés exacts de l'interface Hostinger bougent d'une version à l'autre — si tu ne trouves pas « Auto Deployment », cherche « webhook » dans la même page Git.
 
+## Option A bis — Publication automatique par GitHub Actions
+
+À privilégier si l'écran *Git* de hPanel pose problème : cette méthode ne
+l'utilise pas du tout. Le dépôt contient `.github/workflows/deploy.yml`, qui
+envoie le site par FTP à chaque `git push` sur `main`. Rien à cliquer ensuite.
+
+Le workflow échoue volontairement tant que les trois secrets ne sont pas
+renseignés — il ne peut donc rien casser avant d'être configuré.
+
+### 1. Relever les identifiants FTP
+
+hPanel → *Fichiers* → **Comptes FTP**. Note trois valeurs :
+
+| Ce qu'affiche Hostinger | Exemple |
+|---|---|
+| Hôte / Serveur FTP | `ftp.alexowebdesign.com` ou une adresse IP |
+| Nom d'utilisateur FTP | `u123456789.alexo` |
+| Mot de passe FTP | celui que tu as défini (« Changer le mot de passe » si oublié) |
+
+### 2. Les enregistrer dans GitHub
+
+Dépôt → *Settings* → *Secrets and variables* → **Actions** → **New repository
+secret**. Crée-les un par un, en respectant l'orthographe exacte :
+
+- `FTP_HOST`
+- `FTP_USER`
+- `FTP_PASSWORD`
+
+> Ces secrets sont chiffrés : une fois enregistrés, plus personne ne peut les
+> relire, pas même toi — seulement les remplacer. Ils ne s'affichent jamais
+> dans les journaux d'exécution.
+
+### 3. Lancer une première publication
+
+Onglet **Actions** → *Publier sur Hostinger* → **Run workflow**. Le déroulé
+s'affiche en direct ; l'étape « Constituer le dossier à publier » liste les
+fichiers envoyés, ce qui permet de vérifier avant même de regarder le site.
+
+Ensuite, chaque `git push` sur `main` publie tout seul en une à deux minutes.
+
+### Ce qui n'est pas publié
+
+`docs/`, `brand/`, `README.md`, `ERRORS_LOG.md`, `.github/` et `.gitignore`
+restent dans le dépôt sans jamais partir en ligne.
+
+### Notes
+
+- Le workflow **ajoute et remplace** des fichiers, il n'en supprime aucun. Un
+  fichier retiré du dépôt reste donc en ligne : à supprimer à la main dans le
+  gestionnaire de fichiers. C'est délibéré — une suppression automatique
+  combinée à un mauvais chemin distant effacerait le site.
+- Le transfert est chiffré (FTPS) avec vérification du certificat. En cas
+  d'erreur de certificat, essayer le nom d'hôte technique fourni par Hostinger
+  plutôt que le domaine.
+- Si le chemin distant n'est pas `/public_html/`, corriger la dernière ligne du
+  `mirror` dans `.github/workflows/deploy.yml`.
+
 ## Option B — Upload manuel (dépannage)
 
 Utile si le déploiement Git coince, ou pour une correction urgente.
