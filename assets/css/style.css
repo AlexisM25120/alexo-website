@@ -12,7 +12,7 @@
   --ink-raised: #121213;   /* surfaces légèrement au-dessus du fond */
   --chalk:      #ededea;   /* texte principal */
   --chalk-dim:  #9c9c98;   /* texte secondaire */
-  --chalk-mute: #6a6a67;   /* légendes, sources */
+  --chalk-mute: #7d7d7a;   /* légendes, sources — 4.79:1 sur --ink, conforme WCAG AA */
   --rule:       rgba(237, 237, 234, .14);
   --rule-soft:  rgba(237, 237, 234, .07);
 
@@ -208,6 +208,23 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 900px) {
   .nav, .nav-cta { display: none; }
   .burger { display: flex; }
+
+  /* Les pages secondaires (CGV, mentions légales) n'ont ni burger ni menu
+     déroulant : masquer .nav les priverait de toute navigation. Elles portent
+     .topbar-lite et gardent leurs trois liens affichés, en plus compact. */
+  .topbar-lite .topbar-row {
+    flex-wrap: wrap;
+    gap: 10px 20px;
+    padding: 16px 32px;
+  }
+  .topbar-lite .nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    margin-left: 0;
+    width: 100%;
+  }
+  .topbar-lite .nav a { font-size: .6rem; letter-spacing: .1em; }
 }
 
 /* ---------- hero ---------- */
@@ -866,6 +883,22 @@ textarea { min-height: 110px; resize: vertical; }
   opacity: 1;
   transform: perspective(1200px) rotateX(0) translate3d(0, 0, 0);
 }
+
+/* ---------- accessibilité clavier ----------
+   Anneau de focus accordé à la charte. `:focus-visible` ne se déclenche qu'à
+   la navigation clavier : rien ne change pour qui utilise la souris.
+   Placé en fin de fichier pour passer devant `input:focus { outline: none }`,
+   qui a la même spécificité. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--chalk);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+input:focus-visible, textarea:focus-visible { outline-offset: 1px; }
 
 /* ---------- accessibilité mouvement ---------- */
 @media (prefers-reduced-motion: reduce) {

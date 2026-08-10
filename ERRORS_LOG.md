@@ -57,11 +57,10 @@ métadonnées, secrets), ESLint, Chromium headless via Playwright aux largeurs
 
 ---
 
-## Constats laissés en attente de décision
+## Corrections à effet visuel — arbitrées puis appliquées
 
-Ces trois points sont réels et documentés, mais leur correction **modifie
-l'apparence ou le comportement visible** du site. Ils ne doivent pas être
-corrigés sans arbitrage explicite.
+Ces trois points modifiaient l'apparence ou le comportement visible. Ils ont
+été soumis à décision avant application, puis corrigés selon les choix retenus.
 
 ### B-01 — Navigation absente sur mobile pour les pages légales
 
@@ -78,8 +77,16 @@ corrigés sans arbitrage explicite.
 - **Mesure** : à 375 px et 768 px, seul le logo `alexo` reste cliquable sur ces
   pages. Le visiteur n'est pas piégé — le logo ramène à l'accueil — mais la
   navigation est perdue.
-- **Statut** : non corrigé, en attente d'arbitrage entre deux approches
-  (afficher la nav simplifiée sur mobile, ou ajouter le burger à ces pages).
+- **Décision** : garder les liens visibles sur mobile plutôt que d'ajouter le
+  burger — ces pages n'ont que trois liens, et cette option n'introduit aucun
+  JavaScript supplémentaire sur des pages qui n'en chargent pas.
+- **Correction** : les deux pages portent désormais `class="topbar topbar-lite"`.
+  Sous 900 px, `.topbar-lite .nav` reste affiché, passe en `flex-wrap` sur une
+  deuxième ligne et réduit sa taille de police. L'accueil et la page 404 sont
+  inchangés.
+- **Vérification** : à 375 px et 768 px, les trois liens sont mesurés visibles
+  sur `cgv.html` et `mentions-legales.html`. Aucun débordement horizontal
+  introduit.
 
 ### B-02 — Contraste insuffisant de `--chalk-mute`
 
@@ -93,9 +100,14 @@ corrigés sans arbitrage explicite.
   règles, à des tailles de 0,54 rem à 0,96 rem (≈ 8,6 à 15,4 px) — labels,
   légendes, sources. Toutes sont bien en dessous du seuil « grand texte » qui
   autoriserait 3:1.
-- **Piste** : `#7d7d7a` donne 4,79:1 et 4,53:1, conforme sur les deux fonds,
-  tout en restant dans la gamme monochrome.
-- **Statut** : non corrigé — modifie la direction artistique.
+- **Décision** : corriger — la lisibilité prime sur l'écart de nuance.
+- **Correction** : `--chalk-mute` passe à `#7d7d7a`, soit **4,79:1** sur
+  `--ink` et **4,53:1** sur `--ink-raised`. Conforme AA sur les deux fonds,
+  et toujours dans la gamme monochrome.
+- **Réserve connue et acceptée** : `input::placeholder` combine cette couleur
+  avec `opacity: .6`, ce qui replonge le texte indicatif sous le seuil. C'est
+  admis : chaque champ possède un `<label>` visible et associé, le placeholder
+  n'est qu'un complément, jamais la seule information.
 
 ### B-03 — Pas de style de focus clavier explicite
 
@@ -108,7 +120,14 @@ corrigés sans arbitrage explicite.
   n'est défini pour les liens et les boutons : ils conservent l'anneau par
   défaut du navigateur, non accordé à la charte. Aucun lien d'évitement
   (« Aller au contenu ») n'est présent non plus.
-- **Statut** : non corrigé — ajout visible au clavier.
+- **Décision** : ajouter l'anneau de focus accordé à la charte ; le lien
+  d'évitement n'a pas été retenu.
+- **Correction** : bloc `:focus-visible` en fin de feuille de style, sur les
+  liens, boutons, champs et éléments `[tabindex]`. Placé en fin de fichier à
+  dessein : `input:focus { outline: none }` a la même spécificité, seul l'ordre
+  de déclaration le fait passer devant. `:focus-visible` ne se déclenche qu'au
+  clavier — rien ne change à la souris.
+- **Reste ouvert** : pas de lien d'évitement.
 
 ---
 
