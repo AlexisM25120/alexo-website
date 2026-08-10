@@ -1,3 +1,15 @@
+# PRÉ-LANCEMENT
+# Le site est volontairement tenu hors de Google via la balise
+# <meta name="robots" content="noindex"> présente dans chaque page.
+#
+# On garde "Allow: /" exprès : un "Disallow: /" empêcherait Google de
+# CRAWLER les pages, donc de LIRE la balise noindex — et l'URL pourrait
+# malgré tout apparaître dans les résultats. Pour être sûr d'être hors
+# index, il faut laisser le robot entrer et lui montrer le noindex.
+#
+# À la levée du pré-lancement : retirer les balises noindex des pages
+# (index.html, cgv.html, mentions-legales.html) et ne rien changer ici.
+
 User-agent: *
 Allow: /
 
