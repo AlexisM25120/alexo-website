@@ -1,18 +1,23 @@
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // Menu mobile
+// Les gardes `if` de ce fichier ne sont pas décoratives : ce script est chargé
+// page par page, et une page qui n'a pas l'élément attendu lèverait une
+// TypeError qui interromprait TOUT le script en dessous.
 const burger = document.getElementById('burger');
 const mobileMenu = document.getElementById('mobileMenu');
-burger.addEventListener('click', () => {
-  const open = mobileMenu.classList.toggle('open');
-  burger.setAttribute('aria-expanded', String(open));
-});
-mobileMenu.querySelectorAll('a').forEach((link) => {
-  link.addEventListener('click', () => {
-    mobileMenu.classList.remove('open');
-    burger.setAttribute('aria-expanded', 'false');
+if (burger && mobileMenu) {
+  burger.addEventListener('click', () => {
+    const open = mobileMenu.classList.toggle('open');
+    burger.setAttribute('aria-expanded', String(open));
   });
-});
+  mobileMenu.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      burger.setAttribute('aria-expanded', 'false');
+    });
+  });
+}
 
 // Reveal au scroll, en cascade dans chaque groupe
 const revealEls = document.querySelectorAll('.reveal');
@@ -32,13 +37,15 @@ revealEls.forEach((el) => observer.observe(el));
 
 // Barre de progression de lecture
 const progressFill = document.getElementById('progressFill');
-const updateProgress = () => {
-  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-  const ratio = scrollable > 0 ? window.scrollY / scrollable : 0;
-  progressFill.style.width = `${Math.min(ratio, 1) * 100}%`;
-};
-window.addEventListener('scroll', updateProgress, { passive: true });
-updateProgress();
+if (progressFill) {
+  const updateProgress = () => {
+    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    const ratio = scrollable > 0 ? window.scrollY / scrollable : 0;
+    progressFill.style.width = `${Math.min(ratio, 1) * 100}%`;
+  };
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+}
 
 // Compteur du prix, déclenché quand la carte entre à l'écran
 const countObserver = new IntersectionObserver(
@@ -68,9 +75,10 @@ const countObserver = new IntersectionObserver(
 );
 document.querySelectorAll('[data-value]').forEach((el) => countObserver.observe(el));
 
-if (!reducedMotion) {
+const heroCanvas = document.getElementById('heroGrid');
+if (!reducedMotion && heroCanvas) {
   // Grille de points du hero : les points se soulèvent autour du curseur
-  const canvas = document.getElementById('heroGrid');
+  const canvas = heroCanvas;
   const ctx = canvas.getContext('2d');
   const hero = canvas.parentElement;
   const SPACING = 34;
@@ -122,15 +130,17 @@ if (!reducedMotion) {
 
   // Curseur personnalisé, grossit sur les éléments cliquables
   const cursor = document.getElementById('cursor');
-  window.addEventListener('pointermove', (event) => {
-    cursor.classList.add('visible');
-    cursor.style.left = `${event.clientX}px`;
-    cursor.style.top = `${event.clientY}px`;
-  });
-  document.querySelectorAll('a, button, input, textarea').forEach((el) => {
-    el.addEventListener('pointerenter', () => cursor.classList.add('grow'));
-    el.addEventListener('pointerleave', () => cursor.classList.remove('grow'));
-  });
+  if (cursor) {
+    window.addEventListener('pointermove', (event) => {
+      cursor.classList.add('visible');
+      cursor.style.left = `${event.clientX}px`;
+      cursor.style.top = `${event.clientY}px`;
+    });
+    document.querySelectorAll('a, button, input, textarea').forEach((el) => {
+      el.addEventListener('pointerenter', () => cursor.classList.add('grow'));
+      el.addEventListener('pointerleave', () => cursor.classList.remove('grow'));
+    });
+  }
 
   // Boutons magnétiques
   document.querySelectorAll('.magnetic').forEach((el) => {
@@ -149,16 +159,18 @@ if (!reducedMotion) {
 
   // La fenêtre du hero s'incline selon la position du curseur
   const heroMark = document.getElementById('heroMark');
-  const browser = heroMark.querySelector('.browser');
-  heroMark.addEventListener('pointermove', (event) => {
-    const rect = heroMark.getBoundingClientRect();
-    const rx = ((event.clientY - rect.top) / rect.height - 0.5) * -12;
-    const ry = ((event.clientX - rect.left) / rect.width - 0.5) * 12;
-    browser.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
-  });
-  heroMark.addEventListener('pointerleave', () => {
-    browser.style.transform = 'rotateX(0) rotateY(0)';
-  });
+  const browser = heroMark && heroMark.querySelector('.browser');
+  if (heroMark && browser) {
+    heroMark.addEventListener('pointermove', (event) => {
+      const rect = heroMark.getBoundingClientRect();
+      const rx = ((event.clientY - rect.top) / rect.height - 0.5) * -12;
+      const ry = ((event.clientX - rect.left) / rect.width - 0.5) * 12;
+      browser.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+    });
+    heroMark.addEventListener('pointerleave', () => {
+      browser.style.transform = 'rotateX(0) rotateY(0)';
+    });
+  }
 
   // Inclinaison 3D d'un élément selon la position du curseur
   const tilt3d = (el, maxDeg = 10, lift = 0) => {
@@ -257,27 +269,29 @@ const LEAD_ENDPOINT = 'https://formsubmit.co/ajax/alexo.webdesign@gmail.com';
 const leadForm = document.getElementById('leadForm');
 const formNote = document.getElementById('formNote');
 
-leadForm.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  const submitBtn = leadForm.querySelector('button[type="submit"]');
-  submitBtn.disabled = true;
-  formNote.classList.remove('success', 'error');
-  formNote.textContent = 'Envoi en cours...';
+if (leadForm && formNote) {
+  leadForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const submitBtn = leadForm.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    formNote.classList.remove('success', 'error');
+    formNote.textContent = 'Envoi en cours...';
 
-  try {
-    const response = await fetch(LEAD_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify(Object.fromEntries(new FormData(leadForm))),
-    });
-    if (!response.ok) throw new Error('request failed');
-    formNote.textContent = 'Merci ! Votre demande a bien été reçue — réponse sous 3 jours ouvrés.';
-    formNote.classList.add('success');
-    leadForm.reset();
-  } catch (err) {
-    formNote.textContent = "L'envoi a échoué — écrivez-moi directement à alexo.webdesign@gmail.com.";
-    formNote.classList.add('error');
-  } finally {
-    submitBtn.disabled = false;
-  }
-});
+    try {
+      const response = await fetch(LEAD_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(Object.fromEntries(new FormData(leadForm))),
+      });
+      if (!response.ok) throw new Error('request failed');
+      formNote.textContent = 'Merci ! Votre demande a bien été reçue — réponse sous 3 jours ouvrés.';
+      formNote.classList.add('success');
+      leadForm.reset();
+    } catch {
+      formNote.textContent = "L'envoi a échoué — écrivez-moi directement à alexo.webdesign@gmail.com.";
+      formNote.classList.add('error');
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+}

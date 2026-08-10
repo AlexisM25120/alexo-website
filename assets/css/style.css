@@ -873,7 +873,7 @@ textarea { min-height: 110px; resize: vertical; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .hero-copy > *, .hero-mark { opacity: 1; transform: none; animation: none; }
   h1 .line-inner { transform: none; animation: none; }
-  .marquee-track, .browser-body > div > *, .bw-cards span { animation: none; }
+  .browser-body > div > *, .bw-cards span { animation: none; }
   .cursor { display: none; }
   .magnetic { transform: none; }
 }
