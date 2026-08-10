@@ -20,7 +20,7 @@
   --font-body:    "Inter", "Helvetica Neue", Arial, sans-serif;
   --font-mono:    "Martian Mono", "SFMono-Regular", Consolas, monospace;
 
-  --container: 1180px;
+  --container: 100%;   /* pleine largeur — était 1180px centré */
   --ease: cubic-bezier(.16, 1, .3, 1);
 }
 
