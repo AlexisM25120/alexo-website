@@ -45,3 +45,8 @@ ErrorDocument 404 /404.html
 
 # --- Ne pas lister le contenu des dossiers ---------------------------------
 Options -Indexes
+
+# --- Fichiers de dépôt à ne pas servir -------------------------------------
+# La racine du dépôt est aussi la racine du site : sans ces règles,
+# /README.md ou /docs/... seraient consultables publiquement.
+RedirectMatch 404 ^/(README\.md|\.git|\.gitignore|docs|brand)(/|$)
