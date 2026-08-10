@@ -135,6 +135,35 @@ grep -rn "À COMPLÉTER" *.html
 grep -rn "PRÉ-LANCEMENT" *.html
 ```
 
+## Important — le numéro de version des fichiers
+
+Dans les pages, la feuille de style et le script sont appelés avec un numéro
+de version :
+
+```html
+<link rel="stylesheet" href="assets/css/style.css?v=2" />
+<script src="assets/js/main.js?v=2"></script>
+```
+
+**Ce `?v=2` n'est pas décoratif.** `.htaccess` demande de conserver le CSS et le
+JS pendant un an — excellent pour la vitesse, mais cela signifie qu'un
+navigateur (ou le cache de l'hébergeur) continue de servir l'ancienne version
+longtemps après une mise à jour. C'est exactement ce qui s'est produit le
+10 août : le bon fichier était sur le serveur, la page affichait l'ancien.
+
+Changer le numéro crée une adresse que personne n'a en mémoire : tout le monde
+récupère la nouvelle version immédiatement.
+
+> **À chaque modification de `style.css` ou `main.js`, incrémenter le numéro**
+> dans les quatre pages (`index.html`, `cgv.html`, `mentions-legales.html`,
+> `404.html`) : `?v=2` → `?v=3`, etc. Ne pas modifier le nom du fichier lui-même.
+
+Pour vérifier qu'aucune page n'a été oubliée :
+
+```bash
+grep -rn "style.css?v=" *.html
+```
+
 ## Mettre à jour le site plus tard
 
 1. Modifie les fichiers, teste en local.
