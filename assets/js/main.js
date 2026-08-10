@@ -283,11 +283,27 @@ if (leadForm && formNote) {
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify(Object.fromEntries(new FormData(leadForm))),
       });
-      if (!response.ok) throw new Error('request failed');
+
+      // FormSubmit répond HTTP 200 même quand il refuse l'envoi — notamment
+      // tant que l'adresse de destination n'a pas été confirmée. Se fier au
+      // seul code HTTP afficherait un « Merci ! » alors que rien n'est parti,
+      // et des demandes seraient perdues sans que personne ne le sache.
+      let payload = null;
+      try { payload = await response.json(); } catch { /* réponse non JSON */ }
+
+      const refused = payload && payload.success !== undefined
+        && String(payload.success).toLowerCase() !== 'true';
+
+      if (!response.ok || refused) {
+        throw new Error((payload && payload.message) || `HTTP ${response.status}`);
+      }
+
       formNote.textContent = 'Merci ! Votre demande a bien été reçue — réponse sous 3 jours ouvrés.';
       formNote.classList.add('success');
       leadForm.reset();
-    } catch {
+    } catch (err) {
+      // Le détail va dans la console : il indique la cause exacte du refus.
+      console.error('Formulaire de maquette — envoi refusé :', err.message);
       formNote.textContent = "L'envoi a échoué — écrivez-moi directement à alexo.webdesign@gmail.com.";
       formNote.classList.add('error');
     } finally {
