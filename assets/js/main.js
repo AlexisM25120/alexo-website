@@ -81,6 +81,10 @@ if (!reducedMotion && heroCanvas) {
   const canvas = heroCanvas;
   const ctx = canvas.getContext('2d');
   const hero = canvas.parentElement;
+  // La couleur des points vient de la palette CSS : aucune valeur en dur ici,
+  // un changement de --violet-raw se propage donc jusqu'au canvas.
+  const dotRGB = getComputedStyle(document.documentElement)
+    .getPropertyValue('--violet-raw').trim() || '236, 233, 247';
   const SPACING = 34;
   const RADIUS = 130;
   let points = [];
@@ -109,7 +113,7 @@ if (!reducedMotion && heroCanvas) {
       const dist = Math.hypot(dx, dy);
       const pull = dist < RADIUS ? (1 - dist / RADIUS) : 0;
       const size = 1 + pull * 2.4;
-      ctx.fillStyle = `rgba(237, 237, 234, ${0.07 + pull * 0.45})`;
+      ctx.fillStyle = `rgba(${dotRGB}, ${0.07 + pull * 0.45})`;
       ctx.beginPath();
       ctx.arc(p.x - dx * pull * 0.18, p.y - dy * pull * 0.18, size, 0, Math.PI * 2);
       ctx.fill();
@@ -304,7 +308,10 @@ if (leadForm && formNote) {
     } catch (err) {
       // Le détail va dans la console : il indique la cause exacte du refus.
       console.error('Formulaire de maquette — envoi refusé :', err.message);
-      formNote.textContent = "L'envoi a échoué — écrivez-moi directement à alexo.webdesign@gmail.com.";
+      // Contenu fixe, aucune donnée du visiteur n'est réinjectée ici.
+      formNote.innerHTML =
+        'L\'envoi a échoué — écrivez-moi directement à '
+        + '<a href="mailto:alexo.webdesign@gmail.com">alexo.webdesign@gmail.com</a>.';
       formNote.classList.add('error');
     } finally {
       submitBtn.disabled = false;

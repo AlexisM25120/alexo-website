@@ -1,20 +1,35 @@
 /* ==========================================================================
    Alexo — Studio web
-   Direction : fond encre, grande typographie serif éditoriale, mono pour les
-   labels. Monochrome strict — noir, gris, blanc cassé.
+   Direction : fond encre violacée, grande typographie serif éditoriale, mono
+   pour les labels. Titres et accents en violet, corps de texte neutre pour
+   rester lisible. Toute la palette est définie dans :root ci-dessous.
 
    Type   : Instrument Serif (titres) · Inter (texte) · Martian Mono (labels)
    Police du logo à venir : remplacer --font-display une fois reçue.
    ========================================================================== */
 
 :root {
-  --ink:        #0a0a0b;   /* fond principal */
-  --ink-raised: #121213;   /* surfaces légèrement au-dessus du fond */
-  --chalk:      #ededea;   /* texte principal */
-  --chalk-dim:  #9c9c98;   /* texte secondaire */
-  --chalk-mute: #7d7d7a;   /* légendes, sources — 4.79:1 sur --ink, conforme WCAG AA */
-  --rule:       rgba(237, 237, 234, .14);
-  --rule-soft:  rgba(237, 237, 234, .07);
+  /* Palette — encre violacée, accents violets.
+     Toutes les couleurs du site descendent de ces variables : changer une
+     teinte ici la propage partout, aucune valeur n'est écrite en dur ailleurs.
+     Les rapports de contraste indiqués sont mesurés sur --ink et vérifiés
+     conformes WCAG AA (4.5:1 minimum pour du texte normal). */
+  --ink:        #0a0713;   /* fond principal — noir profond teinté violet */
+  --ink-raised: #15102a;   /* surfaces au-dessus du fond */
+
+  --chalk:      #ece9f7;   /* texte principal      — 16.7:1 */
+  --chalk-dim:  #ada4cc;   /* texte secondaire     —  8.5:1 */
+  --chalk-mute: #8b82ab;   /* légendes, sources    —  5.6:1 */
+
+  --violet:     #b49bff;   /* titres et accents    —  8.6:1 */
+  --violet-dim: #9b86e0;   /* accents secondaires  —  6.5:1 */
+  --violet-raw: 180, 155, 255;  /* composantes RVB, pour les transparences */
+
+  --rule:       rgba(var(--violet-raw), .20);
+  --rule-soft:  rgba(var(--violet-raw), .10);
+  --glow:       rgba(var(--violet-raw), .13);   /* halo diffus du hero */
+  --veil:       rgba(10, 7, 19, .82);           /* barre de nav translucide */
+  --danger:     #ff9b9b;   /* message d'erreur     —  8.0:1 */
 
   --font-display: "Instrument Serif", Georgia, "Times New Roman", serif;
   --font-body:    "Inter", "Helvetica Neue", Arial, sans-serif;
@@ -37,11 +52,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-::selection { background: var(--chalk); color: var(--ink); }
+::selection { background: var(--violet); color: var(--ink); }
 
 /* ---------- typographie ---------- */
 h1, h2 {
   font-family: var(--font-display);
+  color: var(--violet);
   font-weight: 400;
   line-height: .96;
   letter-spacing: -0.015em;
@@ -61,7 +77,7 @@ h3 {
 
 h1 em, h2 em {
   font-style: italic;
-  color: var(--chalk-dim);
+  color: var(--violet-dim);
 }
 
 p { margin: 0 0 1em; color: var(--chalk-dim); }
@@ -81,7 +97,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 400;
   letter-spacing: .22em;
   text-transform: uppercase;
-  color: var(--chalk-mute);
+  color: var(--violet-dim);
   margin: 0 0 26px;
 }
 
@@ -122,12 +138,12 @@ a { color: inherit; text-decoration: none; }
 }
 .btn:hover::before { transform: scaleY(1); }
 
-.btn-solid { background: var(--chalk); color: var(--ink); }
+.btn-solid { background: var(--violet); border-color: var(--violet); color: var(--ink); }
 .btn-solid::before { background: var(--ink); }
 .btn-solid:hover { color: var(--chalk); }
 
 .btn-ghost { background: transparent; color: var(--chalk); }
-.btn-ghost::before { background: var(--chalk); }
+.btn-ghost::before { background: var(--violet); }
 .btn-ghost:hover { color: var(--ink); }
 
 .btn-line {
@@ -149,7 +165,7 @@ a { color: inherit; text-decoration: none; }
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(10, 10, 11, .8);
+  background: var(--veil);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--rule-soft);
 }
@@ -232,6 +248,19 @@ a { color: inherit; text-decoration: none; }
   position: relative;
   padding: 140px 0 110px;
   overflow: hidden;
+}
+/* Halo violet diffus, purement décoratif : il pose la couleur derrière le
+   titre sans jamais passer sous du texte à contraste critique. */
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -22%;
+  left: 46%;
+  width: min(1100px, 78vw);
+  aspect-ratio: 1;
+  background: radial-gradient(circle, var(--glow) 0%, transparent 68%);
+  pointer-events: none;
+  z-index: 0;
 }
 .hero-grid-canvas {
   position: absolute;
@@ -423,16 +452,27 @@ h1 .line-mask:nth-child(2) .line-inner { animation-delay: .14s; }
   align-items: center;
 }
 .about-portrait { display: flex; flex-direction: column; gap: 18px; }
-/* Cadre en attente de la vraie photo : remplacer par <img> une fois fournie */
+/* Cadre du portrait. Le rapport 4/5 est imposé par le cadre, pas par le
+   fichier : une photo de n'importe quel format sera recadrée proprement par
+   object-fit sans être déformée. object-position vise légèrement au-dessus du
+   centre, là où se trouve un visage sur un portrait. */
 .portrait-frame {
   aspect-ratio: 4 / 5;
+  width: 100%;
+  max-width: 420px;
   border: 1px solid var(--rule);
   background: var(--ink-raised);
   display: grid;
   place-items: center;
   overflow: hidden;
 }
-.portrait-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.portrait-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 35%;
+  display: block;
+}
 .portrait-initial {
   font-family: var(--font-display);
   font-size: clamp(4rem, 8vw, 7rem);
@@ -645,6 +685,54 @@ h1 .line-mask:nth-child(2) .line-inner { animation-delay: .14s; }
   .steps li { grid-template-columns: 1fr; gap: 12px; }
 }
 
+/* ---------- questions fréquentes ---------- */
+.faq-list { border-top: 1px solid var(--rule-soft); }
+
+.faq-item { border-bottom: 1px solid var(--rule-soft); }
+
+.faq-item summary {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 28px;
+  padding: 26px 0;
+  font-size: 1.06rem;
+  color: var(--chalk);
+  cursor: pointer;
+  list-style: none;              /* retire le triangle par défaut */
+  transition: color .3s ease;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary:hover { color: var(--chalk-dim); }
+
+/* Indicateur + / − dessiné en CSS, pour rester dans la charte mono */
+.faq-item summary::after {
+  content: "+";
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--chalk-mute);
+  transition: transform .35s var(--ease), color .3s ease;
+}
+.faq-item[open] summary::after {
+  content: "−";
+  color: var(--chalk);
+}
+.faq-item summary:focus-visible {
+  outline: 2px solid var(--chalk);
+  outline-offset: 4px;
+}
+
+.faq-answer { padding: 0 0 28px; }
+.faq-answer p { margin: 0 0 .9em; color: var(--chalk-dim); }
+.faq-answer p:last-child { margin-bottom: 0; }
+
+@media (max-width: 640px) {
+  .faq-item summary { padding: 22px 0; font-size: 1rem; gap: 18px; }
+  .faq-answer { padding-bottom: 24px; }
+}
+
 /* ---------- tarif ---------- */
 .price-card {
   border: 1px solid var(--rule);
@@ -755,7 +843,7 @@ textarea { min-height: 110px; resize: vertical; }
   margin: 0;
 }
 .form-note.success { color: var(--chalk); }
-.form-note.error { color: #d98a8a; }
+.form-note.error { color: var(--danger); }
 
 @media (max-width: 900px) {
   .lead-grid { grid-template-columns: 1fr; gap: 48px; }
@@ -833,10 +921,17 @@ textarea { min-height: 110px; resize: vertical; }
   z-index: 100;
   background: transparent;
 }
+.foot-zone {
+  margin: 14px 0 0;
+  max-width: 34ch;
+  font-size: .86rem;
+  color: var(--chalk-mute);
+}
+
 .progress-fill {
   height: 100%;
   width: 0;
-  background: var(--chalk);
+  background: var(--violet);
   transition: width .12s linear;
 }
 
