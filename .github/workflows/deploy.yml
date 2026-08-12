@@ -5,10 +5,17 @@ name: Publier sur Hostinger
 # ne sont pas renseignés dans GitHub (Settings → Secrets and variables →
 # Actions). Voir docs/DEPLOIEMENT-HOSTINGER.md.
 
+# EN VEILLE — le déclenchement automatique à chaque push est désactivé tant que
+# les secrets FTP ne sont pas renseignés : sans eux le workflow échoue à chaque
+# fois et envoie un mail d'erreur pour rien.
+#
+# POUR L'ACTIVER : renseigner FTP_HOST, FTP_USER et FTP_PASSWORD dans
+# Settings > Secrets and variables > Actions, puis remettre les trois lignes
+# `push:` ci-dessous en retirant les `#`.
 on:
-  push:
-    branches: [main]
-  workflow_dispatch:        # permet aussi de publier à la demande, depuis l'onglet Actions
+  # push:
+  #   branches: [main]
+  workflow_dispatch:        # lancement manuel depuis l'onglet Actions
 
 concurrency:
   group: deploy-hostinger   # deux envois rapprochés ne se marchent pas dessus
