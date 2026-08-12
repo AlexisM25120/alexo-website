@@ -311,6 +311,15 @@ if (leadForm && formNote) {
     } catch (err) {
       // Le détail va dans la console : il indique la cause exacte du refus.
       console.error('Formulaire de maquette — envoi refusé :', err.message);
+      // Mode diagnostic : en ouvrant la page avec ?debug=1, le motif exact du
+      // refus s'affiche à l'écran. Cela évite d'ouvrir les outils du
+      // navigateur pour comprendre. Un visiteur normal ne le voit jamais.
+      if (new URLSearchParams(location.search).has('debug')) {
+        formNote.textContent = 'DIAGNOSTIC — motif du refus : ' + err.message;
+        formNote.classList.add('error');
+        submitBtn.disabled = false;
+        return;
+      }
       // Contenu fixe, aucune donnée du visiteur n'est réinjectée ici.
       formNote.innerHTML =
         'L\'envoi a échoué — écrivez-moi directement à '
