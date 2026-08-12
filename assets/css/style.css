@@ -36,7 +36,7 @@
   --font-body:    "Inter", "Helvetica Neue", Arial, sans-serif;
   --font-mono:    "Martian Mono", "SFMono-Regular", Consolas, monospace;
 
-  --container: 1180px;   /* contenu centré, largeur maximale commune */
+  --container: 1440px;   /* contenu centré, largeur maximale commune */
   --ease: cubic-bezier(.16, 1, .3, 1);
 }
 
@@ -533,11 +533,18 @@ h1 .line-mask:nth-child(2) .line-inner { animation-delay: .14s; }
 
 /* ---------- galerie de réalisations ---------- */
 /* Carrousel 3D : les cartes pivotent selon leur distance au centre du rail */
+/* La galerie déborde volontairement du conteneur, mais ses cartes doivent
+   démarrer sur la même verticale que le reste du contenu : le retrait suit
+   donc la largeur du conteneur. `safe center` recentre les cartes quand
+   elles tiennent dans la largeur, sans rendre le début inaccessible quand
+   elles débordent. */
 .work-rail {
   display: flex;
+  justify-content: safe center;
   gap: 32px;
   overflow-x: auto;
-  padding: 40px 32px 48px;
+  padding-block: 40px 48px;
+  padding-inline: max(32px, calc((100% - var(--container)) / 2 + 32px));
   scroll-snap-type: x mandatory;
   cursor: grab;
   scrollbar-width: none;
@@ -724,8 +731,13 @@ h1 .line-mask:nth-child(2) .line-inner { animation-delay: .14s; }
 }
 
 /* ---------- citation du fondateur ---------- */
-.quote-band { border-top: 1px solid var(--rule-soft); }
-.pull-quote { margin: 0; max-width: 22ch; }
+/* La citation vit maintenant dans la colonne de texte de « Qui je suis »,
+   sous la bio : elle prolonge le propos au lieu d'ouvrir une section. */
+.pull-quote {
+  margin: 44px 0 0;
+  padding-top: 34px;
+  border-top: 1px solid var(--rule-soft);
+}
 .pull-quote blockquote { margin: 0; position: relative; }
 .pull-quote blockquote::before {
   content: "\201C";
@@ -741,7 +753,7 @@ h1 .line-mask:nth-child(2) .line-inner { animation-delay: .14s; }
 .pull-quote blockquote p {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(1.9rem, 3.6vw, 3rem);
+  font-size: clamp(1.6rem, 2.6vw, 2.3rem);
   line-height: 1.14;
   letter-spacing: -0.015em;
   color: var(--violet);
@@ -1005,12 +1017,39 @@ textarea { min-height: 110px; resize: vertical; }
 
 /* ---------- pages légales / 404 ---------- */
 .legal { border-top: none; padding-top: 150px; }   /* dégage la barre fixe */
+
+/* Les pages secondaires n'ont pas le hero et se retrouvaient sur un aplat.
+   Deux halos violets très diffus leur rendent la profondeur de l'accueil,
+   sans jamais passer sous un texte à contraste critique : ils restent en
+   fond de page, derrière le contenu. */
+.legal::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60vw 48vw at 78% -8%, var(--glow) 0%, transparent 62%),
+    radial-gradient(52vw 42vw at 8% 108%, rgba(var(--violet-raw), .09) 0%, transparent 64%);
+}
 .legal-body h2 {
   font-size: clamp(1.4rem, 2.4vw, 1.9rem);
   margin-top: 56px;
   padding-top: 32px;
   border-top: 1px solid var(--rule-soft);
 }
+/* Sous-articles des CGV : hiérarchie visible sous les h2, sans filet ni
+   la taille d'un titre de section. */
+.legal-body h3 {
+  margin: 34px 0 12px;
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 400;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--violet);
+}
+
 .legal-body a { border-bottom: 1px solid var(--rule); }
 .legal-body a:hover { border-color: var(--chalk); }
 .legal-body ul { padding-left: 20px; color: var(--chalk-dim); }

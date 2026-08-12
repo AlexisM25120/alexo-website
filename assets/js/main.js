@@ -258,12 +258,13 @@ if (!reducedMotion && heroCanvas) {
     const stop = () => { dragging = false; rail.classList.remove('dragging'); };
     rail.addEventListener('pointerup', stop);
     rail.addEventListener('pointercancel', stop);
-    // La molette verticale fait défiler la galerie horizontalement
-    rail.addEventListener('wheel', (event) => {
-      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
-      event.preventDefault();
-      rail.scrollLeft += event.deltaY;
-    }, { passive: false });
+    // Pas de détournement de la molette ici.
+    // L'ancienne version convertissait le défilement vertical en défilement
+    // horizontal et appelait preventDefault() à chaque coup de molette. Une fois
+    // la galerie arrivée en butée, scrollLeft ne bougeait plus mais le
+    // preventDefault continuait de bloquer la page : le curseur posé sur la
+    // galerie figeait tout le site. La molette reste donc à la page ; le
+    // défilement horizontal se fait au glisser, au doigt ou au clavier.
   }
 }
 
