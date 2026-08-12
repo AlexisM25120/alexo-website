@@ -839,9 +839,40 @@ h1 .line-mask:nth-child(2) .line-inner { animation-delay: .14s; }
   gap: 10px;
   padding-bottom: 22px;
 }
-.price-grid .price-amount { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+/* .price-amount est aligné à droite dans le bloc large d'origine ; en
+   colonne étroite tout doit repartir de la gauche, sous le nom. */
+.price-grid .price-amount {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  text-align: left;
+}
 .price-grid .price-num { font-size: clamp(2.2rem, 3.4vw, 3rem); }
 .price-grid .price-list li { font-size: .92rem; }
+
+/* « À partir de » occupe sa propre ligne au-dessus du montant : le prix reste
+   le premier élément que l'œil accroche, la nuance ne l'écrase pas. */
+.price-from {
+  flex-basis: 100%;
+  font-family: var(--font-mono);
+  font-size: .56rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--chalk-mute);
+}
+
+/* Mention d'acompte : identique sur les trois cartes, pour qu'elle se lise
+   comme une règle de la maison et non comme une condition par forfait. */
+.price-deposit {
+  margin: 12px 0 0;
+  font-family: var(--font-mono);
+  font-size: .58rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--violet-dim);
+}
 .price-flag {
   align-self: flex-start;
   margin: 0 0 18px;
