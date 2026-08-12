@@ -7,6 +7,50 @@ Format : une entrée par problème, la plus récente en haut.
 
 ---
 
+## Passe du 12 août 2026
+
+### C-01 — Le formulaire annonçait un succès alors que rien ne partait
+
+- **Catégorie** : bug fonctionnel / perte de prospects
+- **Sévérité** : bloquant
+- **Localisation** : `assets/js/main.js`, gestionnaire d'envoi du formulaire
+- **Symptôme** : le visiteur voyait « Merci ! Votre demande a bien été reçue »,
+  aucun message n'arrivait dans la boîte, et personne ne pouvait s'en rendre
+  compte — ni le visiteur, ni le destinataire.
+- **Cause racine** : deux causes superposées, ce qui explique la durée du
+  diagnostic.
+  1. **Le service d'envoi refusait les messages.** FormSubmit exige une
+     confirmation unique de l'adresse de destination avant d'acheminer quoi que
+     ce soit. Tant qu'elle n'est pas faite, chaque envoi est rejeté.
+  2. **Le code masquait ce refus.** Il ne testait que le code HTTP de la
+     réponse. Or FormSubmit répond 200 même lorsqu'il refuse : le motif est dans
+     le corps JSON, champ `success`. Un refus était donc lu comme un succès.
+- **Correction** : la réponse JSON est lue et son champ `success` vérifié ; le
+  motif exact est écrit dans la console, et affichable à l'écran en ouvrant la
+  page avec `?debug=1`. Le formulaire a par ailleurs reçu `action`/`method`
+  pour rester fonctionnel sans JavaScript.
+- **Résolution** : confirmation de l'adresse effectuée le 12 août. Envoi et
+  réception vérifiés de bout en bout par l'utilisateur.
+
+### C-02 — La galerie de réalisations figeait le défilement de la page
+
+- **Catégorie** : bug fonctionnel
+- **Sévérité** : important
+- **Localisation** : `assets/js/main.js`, écouteur `wheel` du carrousel
+- **Cause racine** : l'écouteur convertissait le défilement vertical en
+  défilement horizontal et appelait `preventDefault()` à chaque événement, sans
+  condition. Une fois la galerie en butée, `scrollLeft` ne bougeait plus mais
+  `preventDefault()` continuait de bloquer la page : curseur posé sur une
+  carte, tout le site se figeait.
+- **Correction** : détournement supprimé. Le défilement horizontal reste
+  accessible au glisser, au doigt et au clavier.
+- **Vérification** : survol de chacune des trois cartes puis molette — la page
+  défile de 847, 878 et 586 px. Contre-épreuve en réinjectant l'ancien code :
+  deux cartes sur trois bloquaient à 0 px, ce qui confirme que le test détecte
+  bien le défaut.
+
+---
+
 ## Passe d'audit du 10 août 2026
 
 Périmètre : `index.html`, `cgv.html`, `mentions-legales.html`, `404.html`, les
@@ -182,10 +226,19 @@ Tirées des problèmes rencontrés ci-dessus.
    balises `canonical` et `og:`, et l'objet du formulaire :
    `grep -rn "ancien-domaine" .`
 
-6. **Ne jamais activer la redirection HTTPS de `.htaccess` avant que le
+6. **Ne jamais conclure au succès d'un envoi sur le seul code HTTP.** Un
+   service peut répondre 200 tout en refusant la demande ; le verdict est dans
+   le corps de la réponse. Un faux succès sur un formulaire de prospection est
+   la panne la plus coûteuse qui soit : elle est invisible des deux côtés.
+
+7. **Un écouteur qui appelle `preventDefault()` doit d'abord vérifier qu'il a
+   quelque chose à faire.** Bloquer le comportement natif du navigateur sans
+   le remplacer effectivement, c'est figer la page.
+
+8. **Ne jamais activer la redirection HTTPS de `.htaccess` avant que le
    certificat SSL soit actif.** Boucle de redirection, site injoignable.
 
-7. **Ne pas mettre `Disallow: /` dans `robots.txt` pour masquer un site.**
+9. **Ne pas mettre `Disallow: /` dans `robots.txt` pour masquer un site.**
    Cela empêche la lecture de la balise `noindex` et l'URL peut ressortir
    malgré tout. Laisser le crawl ouvert et poser `noindex` sur les pages.
 
