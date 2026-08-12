@@ -71,7 +71,9 @@ const countObserver = new IntersectionObserver(
       requestAnimationFrame(tick);
     });
   },
-  { threshold: 0.6 }
+  // Seuil bas : dans la grille à trois offres, la carte peut n'être que
+  // partiellement visible sur les petits écrans.
+  { threshold: 0.25 }
 );
 document.querySelectorAll('[data-value]').forEach((el) => countObserver.observe(el));
 

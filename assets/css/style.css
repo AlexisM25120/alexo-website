@@ -30,12 +30,13 @@
   --glow:       rgba(var(--violet-raw), .13);   /* halo diffus du hero */
   --veil:       rgba(10, 7, 19, .82);           /* barre de nav translucide */
   --danger:     #ff9b9b;   /* message d'erreur     —  8.0:1 */
+  --status:     #5fe3a1;   /* pastille « disponible » — 11.5:1 */
 
   --font-display: "Instrument Serif", Georgia, "Times New Roman", serif;
   --font-body:    "Inter", "Helvetica Neue", Arial, sans-serif;
   --font-mono:    "Martian Mono", "SFMono-Regular", Consolas, monospace;
 
-  --container: 100%;   /* pleine largeur — était 1180px centré */
+  --container: 1180px;   /* contenu centré, largeur maximale commune */
   --ease: cubic-bezier(.16, 1, .3, 1);
 }
 
@@ -160,45 +161,54 @@ a { color: inherit; text-decoration: none; }
   transition: transform .4s var(--ease), color .35s ease;
 }
 
-/* ---------- barre de navigation ---------- */
+/* ---------- barre de navigation flottante ---------- */
+/* La barre est fixe et centrée : une pilule qui survole le contenu et reste
+   accessible pendant tout le défilement. Le conteneur laisse passer les clics
+   à côté de la pilule, sinon il masquerait toute la largeur de l'écran. */
 .topbar {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: var(--veil);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--rule-soft);
+  position: fixed;
+  top: 16px;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  padding: 0 16px;
+  pointer-events: none;
 }
-.topbar-row {
+.topbar-pill {
+  pointer-events: auto;
   display: flex;
   align-items: center;
-  gap: 32px;
-  padding: 20px 32px;
+  gap: 26px;
+  max-width: 100%;
+  padding: 8px 8px 8px 24px;
+  background: var(--veil);
+  backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  box-shadow: 0 14px 44px rgba(0, 0, 0, .5);
 }
-.nav {
-  display: flex;
-  gap: 30px;
-  margin-left: 56px;
-  margin-right: auto;
-}
+.nav { display: flex; gap: 26px; }
 .nav a {
   font-family: var(--font-mono);
-  font-size: .66rem;
+  font-size: .64rem;
   letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--chalk-dim);
   transition: color .3s ease;
+  white-space: nowrap;
 }
-.nav a:hover { color: var(--chalk); }
-.nav-cta { margin-left: auto; }
+.nav a:hover { color: var(--violet); }
+.nav-cta { padding: 11px 22px; font-size: .62rem; white-space: nowrap; }
 
 .burger {
   display: none;
   flex-direction: column;
   justify-content: center;
   gap: 5px;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   background: none;
   border: none;
   cursor: pointer;
@@ -206,41 +216,69 @@ a { color: inherit; text-decoration: none; }
 .burger span { display: block; height: 1px; background: var(--chalk); }
 
 .mobile-menu {
+  pointer-events: auto;
   display: none;
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 16px;
+  right: 16px;
   flex-direction: column;
-  padding: 4px 32px 24px;
-  border-bottom: 1px solid var(--rule-soft);
+  padding: 8px 24px 18px;
+  background: var(--veil);
+  backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid var(--rule);
+  border-radius: 26px;
+  box-shadow: 0 14px 44px rgba(0, 0, 0, .5);
 }
 .mobile-menu a {
-  padding: 15px 0;
+  padding: 14px 0;
   font-family: var(--font-mono);
-  font-size: .72rem;
+  font-size: .7rem;
   letter-spacing: .1em;
   text-transform: uppercase;
   border-top: 1px solid var(--rule-soft);
 }
+.mobile-menu a:first-child { border-top: none; }
 .mobile-menu.open { display: flex; }
 
-@media (max-width: 900px) {
+@media (max-width: 980px) {
   .nav, .nav-cta { display: none; }
   .burger { display: flex; }
+  .topbar-pill { gap: 18px; padding: 6px 6px 6px 20px; }
 
-  /* Les pages secondaires (CGV, mentions légales) n'ont ni burger ni menu
-     déroulant : masquer .nav les priverait de toute navigation. Elles portent
-     .topbar-lite et gardent leurs trois liens affichés, en plus compact. */
-  .topbar-lite .topbar-row {
-    flex-wrap: wrap;
-    gap: 10px 20px;
-    padding: 16px 32px;
-  }
-  .topbar-lite .nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px 18px;
-    margin-left: 0;
-    width: 100%;
-  }
-  .topbar-lite .nav a { font-size: .6rem; letter-spacing: .1em; }
+  /* Pages secondaires : pas de burger, les liens restent affichés. */
+  .topbar-lite .topbar-pill { flex-wrap: wrap; justify-content: center; padding: 10px 20px; gap: 8px 16px; }
+  .topbar-lite .nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 16px; }
+  .topbar-lite .nav a { font-size: .58rem; }
+}
+
+/* ---------- indicateur de disponibilité ---------- */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: -14px 0 24px;
+  padding: 7px 16px 7px 13px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: .6rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--chalk-dim);
+}
+.status-dot {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--status);
+  box-shadow: 0 0 0 0 rgba(95, 227, 161, .55);
+  animation: pulse 2.4s ease-out infinite;
+}
+@keyframes pulse {
+  70%  { box-shadow: 0 0 0 9px rgba(95, 227, 161, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(95, 227, 161, 0); }
 }
 
 /* ---------- hero ---------- */
@@ -470,7 +508,7 @@ h1 .line-mask:nth-child(2) .line-inner { animation-delay: .14s; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 35%;
+  object-position: center;   /* le fichier est déjà recadré en 4/5 */
   display: block;
 }
 .portrait-initial {
@@ -685,6 +723,43 @@ h1 .line-mask:nth-child(2) .line-inner { animation-delay: .14s; }
   .steps li { grid-template-columns: 1fr; gap: 12px; }
 }
 
+/* ---------- citation du fondateur ---------- */
+.quote-band { border-top: 1px solid var(--rule-soft); }
+.pull-quote { margin: 0; max-width: 22ch; }
+.pull-quote blockquote { margin: 0; position: relative; }
+.pull-quote blockquote::before {
+  content: "\201C";
+  position: absolute;
+  top: -.34em;
+  left: -.52em;
+  font-family: var(--font-display);
+  font-size: 5rem;
+  line-height: 1;
+  color: var(--rule);
+  pointer-events: none;
+}
+.pull-quote blockquote p {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 3.6vw, 3rem);
+  line-height: 1.14;
+  letter-spacing: -0.015em;
+  color: var(--violet);
+  text-wrap: balance;
+}
+.pull-quote figcaption {
+  margin-top: 26px;
+  font-family: var(--font-mono);
+  font-size: .6rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--chalk-mute);
+}
+@media (max-width: 700px) {
+  .pull-quote { max-width: none; }
+  .pull-quote blockquote::before { font-size: 3.4rem; left: -.28em; }
+}
+
 /* ---------- questions fréquentes ---------- */
 .faq-list { border-top: 1px solid var(--rule-soft); }
 
@@ -734,6 +809,53 @@ h1 .line-mask:nth-child(2) .line-inner { animation-delay: .14s; }
 }
 
 /* ---------- tarif ---------- */
+.price-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 1000px) { .price-grid { grid-template-columns: 1fr; max-width: 560px; } }
+
+.price-card { display: flex; flex-direction: column; }
+
+/* L'offre mise en avant se distingue par la bordure et le fond, pas par une
+   taille différente : les trois cartes restent alignées.
+   Sélecteur doublé volontairement : la règle .price-card générique est
+   déclarée plus bas et repose son `border` en raccourci, ce qui écraserait
+   un simple .price-card-feature à spécificité égale. */
+.price-card.price-card-feature {
+  border-color: var(--violet);
+  background: var(--ink-raised);
+}
+
+/* Trois cartes côte à côte : l'en-tête du bloc unique était pensé pour une
+   pleine largeur (nom à gauche, prix à droite). Dans une colonne étroite il
+   faut empiler, sinon le nom et le prix se croisent. */
+.price-grid .price-card { padding: 36px 30px; }
+.price-grid .price-top {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding-bottom: 22px;
+}
+.price-grid .price-amount { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.price-grid .price-num { font-size: clamp(2.2rem, 3.4vw, 3rem); }
+.price-grid .price-list li { font-size: .92rem; }
+.price-flag {
+  align-self: flex-start;
+  margin: 0 0 18px;
+  padding: 5px 13px;
+  border-radius: 999px;
+  background: var(--violet);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: .55rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.price-card .price-cta { margin-top: auto; }
+
 .price-card {
   border: 1px solid var(--rule);
   padding: 52px;
@@ -851,7 +973,7 @@ textarea { min-height: 110px; resize: vertical; }
 }
 
 /* ---------- pages légales / 404 ---------- */
-.legal { border-top: none; padding-top: 90px; }
+.legal { border-top: none; padding-top: 150px; }   /* dégage la barre fixe */
 .legal-body h2 {
   font-size: clamp(1.4rem, 2.4vw, 1.9rem);
   margin-top: 56px;

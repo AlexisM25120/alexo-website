@@ -103,6 +103,22 @@ footer.site{padding:42px 0 24px;border-top:1px solid var(--line);font-size:.86re
 </head>
 <body>
 
+<!-- Bandeau de retour Alexo — ajouté pour que le visiteur ne soit jamais
+     bloqué dans une démonstration. Sert aussi à indiquer clairement qu'il
+     s'agit d'un site d'exemple et non d'un vrai cabinet. -->
+<div style="position:sticky;top:0;z-index:9999;background:#0a0713;color:#ece9f7;
+            font:400 13px/1.4 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+            border-bottom:1px solid rgba(180,155,255,.25)">
+  <div style="max-width:1180px;margin:0 auto;padding:9px 20px;display:flex;
+              flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between">
+    <span style="color:#ada4cc">Site de démonstration — <strong style="color:#b49bff;font-weight:600">Cabinet Solène</strong> est un exemple fictif réalisé par Alexo.</span>
+    <a href="https://alexowebdesign.com/#realisations"
+       style="color:#0a0713;background:#b49bff;text-decoration:none;
+              padding:6px 14px;border-radius:999px;font-weight:600;white-space:nowrap">&#8592; Retour à Alexo</a>
+  </div>
+</div>
+
+
 <div class="urgent">
   <div class="wrap">
     <span><b>Urgence dentaire ?</b> Nous recevons en urgence tous les jours ouvrés.</span>
@@ -110,9 +126,9 @@ footer.site{padding:42px 0 24px;border-top:1px solid var(--line);font-size:.86re
   </div>
 </div>
 
-<header>
+<header id="top">
   <div class="wrap bar">
-    <a class="logo" href="#"><i></i>Cabinet Solène</a>
+    <a class="logo" href="#top"><i></i>Cabinet Solène</a>
     <nav>
       <a href="#soins">Nos soins</a>
       <a href="#equipe">L'équipe</a>
@@ -207,7 +223,7 @@ footer.site{padding:42px 0 24px;border-top:1px solid var(--line);font-size:.86re
   <div class="wrap">
     <h2>Prenez rendez-vous en ligne</h2>
     <p>Choisissez votre praticien et votre créneau. Une urgence ? Appelez-nous, nous vous recevons dans la journée.</p>
-    <a class="btn btn-fill" href="#">Réserver un créneau</a>
+    <a class="btn btn-fill" href="#rdv">Réserver un créneau</a>
   </div>
 </section>
 

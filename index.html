@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500&family=Martian+Mono:wght@300;400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=4" />
+  <link rel="stylesheet" href="assets/css/style.css?v=5" />
 </head>
 <body>
 
@@ -30,17 +30,17 @@
 <div class="cursor" id="cursor" aria-hidden="true"></div>
 
 <header class="topbar">
-  <div class="container topbar-row">
+  <div class="topbar-pill">
     <a class="brand" href="#top">alexo</a>
     <nav class="nav" aria-label="Navigation principale">
       <a href="#approche">Approche</a>
       <a href="#realisations">Réalisations</a>
       <a href="#qui">Qui je suis</a>
       <a href="#tarif">Tarif</a>
-      <a href="#maquette">Maquette gratuite</a>
+      <a href="#faq">FAQ</a>
       <a href="#contact">Contact</a>
     </nav>
-    <a class="btn btn-line nav-cta" href="#maquette">Maquette gratuite</a>
+    <a class="btn btn-solid nav-cta" href="#maquette">Maquette gratuite</a>
     <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -50,6 +50,7 @@
     <a href="#realisations">Réalisations</a>
     <a href="#qui">Qui je suis</a>
     <a href="#tarif">Tarif</a>
+    <a href="#faq">FAQ</a>
     <a href="#maquette">Maquette gratuite</a>
     <a href="#contact">Contact</a>
   </div>
@@ -62,6 +63,8 @@
     <div class="container hero-grid">
       <div class="hero-copy" id="heroCopy">
         <p class="eyebrow">Studio web indépendant — Besançon</p>
+        <!-- INDICATEUR DE DISPONIBILITÉ — texte à changer ici. -->
+        <p class="status"><span class="status-dot" aria-hidden="true"></span>Disponible — j'accepte de nouveaux projets</p>
         <h1><span class="line-mask"><span class="line-inner">Un site simple,</span></span><span class="line-mask"><span class="line-inner">qui travaille <em>pour vous.</em></span></span></h1>
         <p class="hero-sub">Je conçois des sites vitrines sobres et efficaces pour les indépendants et petites entreprises de <strong>Besançon et du Doubs</strong> — fait main, sans template recyclé, sans surprise sur la facture.</p>
         <div class="hero-cta">
@@ -133,7 +136,7 @@
 
     <div class="work-rail" id="workRail">
 
-      <a class="work-card" href="/demos/osteopathe/" target="_blank" rel="noopener">
+      <a class="work-card" href="/demos/osteopathe/" target="_blank" rel="noopener" aria-label="Voir le site de démonstration (s’ouvre dans un nouvel onglet)">
         <div class="wc-screen">
           <div class="wc-bar"><i></i><i></i><i></i><span class="wc-url">cabinet-riviere.fr</span></div>
           <img src="/assets/img/demo-osteopathe.png" alt="Page d'accueil du site de démonstration Cabinet Rivière, ostéopathie" loading="lazy" width="1440" height="1080" />
@@ -145,7 +148,7 @@
         </div>
       </a>
 
-      <a class="work-card" href="/demos/dentaire/" target="_blank" rel="noopener">
+      <a class="work-card" href="/demos/dentaire/" target="_blank" rel="noopener" aria-label="Voir le site de démonstration (s’ouvre dans un nouvel onglet)">
         <div class="wc-screen">
           <div class="wc-bar"><i></i><i></i><i></i><span class="wc-url">cabinet-solene.fr</span></div>
           <img src="/assets/img/demo-dentaire.png" alt="Page d'accueil du site de démonstration Cabinet Dentaire Solène" loading="lazy" width="1440" height="1080" />
@@ -157,7 +160,7 @@
         </div>
       </a>
 
-      <a class="work-card" href="/demos/artisan/" target="_blank" rel="noopener">
+      <a class="work-card" href="/demos/artisan/" target="_blank" rel="noopener" aria-label="Voir le site de démonstration (s’ouvre dans un nouvel onglet)">
         <div class="wc-screen">
           <div class="wc-bar"><i></i><i></i><i></i><span class="wc-url">atelier-bois-fer.fr</span></div>
           <img src="/assets/img/demo-artisan.png" alt="Page d'accueil du site de démonstration Atelier Bois &amp; Fer, menuiserie" loading="lazy" width="1440" height="1080" />
@@ -211,27 +214,18 @@
 
   <section class="section-pad about" id="qui">
     <div class="container about-grid">
-      <div class="about-portrait reveal" aria-hidden="true">
-        <!-- PLACEHOLDER en attendant la photo d'Alexis.
-             Quand le fichier sera fourni, remplacer le <div class="portrait-frame">
-             ci-dessous par le bloc suivant, et retirer aria-hidden="true" sur
-             .about-portrait pour que la photo et sa légende soient annoncées :
-
-             <div class="portrait-frame">
-               <picture>
-                 <source type="image/webp"
-                         srcset="/assets/img/alexis-420.webp 420w,
-                                 /assets/img/alexis-840.webp 840w"
-                         sizes="(max-width: 900px) 260px, 420px" />
-                 <img src="/assets/img/alexis-840.jpg"
-                      alt="Alexis, fondateur d'Alexo, en portrait"
-                      width="840" height="1050" loading="lazy" decoding="async" />
-               </picture>
-             </div>
-
-             Le cadre impose le rapport 4/5 : la photo sera recadrée par
-             object-fit, sans déformation, quel que soit son format d'origine. -->
-        <div class="portrait-frame"><span class="portrait-initial">A</span></div>
+      <div class="about-portrait reveal">
+        <div class="portrait-frame">
+          <picture>
+            <source type="image/webp"
+                    srcset="/assets/img/alexis-420.webp 420w,
+                            /assets/img/alexis-840.webp 840w"
+                    sizes="(max-width: 900px) 260px, 420px" />
+            <img src="/assets/img/alexis-840.jpg"
+                 alt="Alexis, fondateur d'Alexo, en portrait"
+                 width="840" height="1050" loading="lazy" decoding="async" />
+          </picture>
+        </div>
         <p class="portrait-cap">Alexis — fondateur d'Alexo</p>
       </div>
       <div class="reveal">
@@ -241,6 +235,19 @@
         <p>Je démarre mon activité, et mon tarif le reflète : 997 € pour un site que d'autres facturent le triple. En échange, je mets un soin obsessionnel dans chaque projet, parce que mes premiers clients feront ma réputation.</p>
         <p>Vous m'écrivez, c'est moi qui réponds. Vous appelez, c'est moi qui décroche. Et c'est moi qui code votre site.</p>
       </div>
+    </div>
+  </section>
+
+  <!-- CITATION DU FONDATEUR — pour changer le texte, modifier la ligne
+       entre les guillemets ci-dessous. Rien d'autre à toucher. -->
+  <section class="section-pad quote-band">
+    <div class="container">
+      <figure class="pull-quote reveal">
+        <blockquote>
+          <p>Un site doit vous faire gagner du temps, pas vous en prendre.</p>
+        </blockquote>
+        <figcaption>Alexis — fondateur d'Alexo</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -263,26 +270,110 @@
     <div class="container">
       <div class="section-head reveal">
         <p class="eyebrow">Tarif</p>
-        <h2 data-parallax="1">Un forfait, tout compris</h2>
+        <h2 data-parallax="1">Des formules claires, sans surprise</h2>
       </div>
-      <div class="price-card reveal">
-        <div class="price-top">
-          <h3>Site vitrine</h3>
-          <div class="price-amount"><span class="price-num" id="priceNum" data-value="997">0&nbsp;€</span><span class="price-note">forfait unique</span></div>
+      <div class="price-grid">
+
+        <!-- OFFRE 1 — PLACEHOLDER : nom, prix et lignes à remplacer. -->
+        <div class="price-card reveal">
+          <div class="price-top">
+            <h3>Starter</h3>
+            <div class="price-amount"><span class="price-num">—&nbsp;€</span><span class="price-note">à définir</span></div>
+          </div>
+          <ul class="price-list">
+            <li>Page unique, sur-mesure</li>
+            <li>Optimisé mobile et grand écran</li>
+            <li>Formulaire de contact intégré</li>
+            <li>Livraison sous 1 semaine</li>
+            <li>15 jours d'ajustements inclus</li>
+          </ul>
+          <a class="btn btn-ghost price-cta" href="#maquette">Demander une maquette</a>
         </div>
-        <ul class="price-list">
-          <li>Jusqu'à 5 pages sur-mesure</li>
-          <li>Design original, pensé pour votre activité</li>
-          <li>Optimisé mobile et grand écran</li>
-          <li>Référencement de base (SEO on-page)</li>
-          <li>Formulaire de contact intégré</li>
-          <li>Accompagnement nom de domaine & hébergement</li>
-          <li>Livraison sous 2 semaines</li>
-          <li>30 jours d'ajustements inclus après mise en ligne</li>
-        </ul>
-        <p class="price-terms">Acompte de <b>100&nbsp;€</b> à la commande, solde de <b>897&nbsp;€</b> à la livraison, avant mise en ligne. TVA non applicable, art. 293 B du CGI.</p>
-        <a class="btn btn-solid price-cta" href="#maquette">Démarrer par une maquette gratuite</a>
+
+        <!-- OFFRE 2 — la seule offre réelle aujourd'hui (997 €), reprise du
+             forfait existant. Elle est citée dans le bouton du hero, la FAQ
+             et les CGV : toute modification du prix doit y être répercutée. -->
+        <div class="price-card price-card-feature reveal">
+          <p class="price-flag">Le plus demandé</p>
+          <div class="price-top">
+            <h3>Pro</h3>
+            <div class="price-amount"><span class="price-num" id="priceNum" data-value="997">997&nbsp;€</span><span class="price-note">forfait unique</span></div>
+          </div>
+          <ul class="price-list">
+            <li>Jusqu'à 5 pages sur-mesure</li>
+            <li>Design original, pensé pour votre activité</li>
+            <li>Référencement de base (SEO on-page)</li>
+            <li>Accompagnement nom de domaine &amp; hébergement</li>
+            <li>Livraison sous 2 semaines</li>
+            <li>30 jours d'ajustements inclus après mise en ligne</li>
+          </ul>
+          <p class="price-terms">Acompte de <b>100&nbsp;€</b> à la commande, solde de <b>897&nbsp;€</b> à la livraison. TVA non applicable, art. 293 B du CGI.</p>
+          <a class="btn btn-solid price-cta" href="#maquette">Démarrer par une maquette gratuite</a>
+        </div>
+
+        <!-- OFFRE 3 — PLACEHOLDER : nom, prix et lignes à remplacer. -->
+        <div class="price-card reveal">
+          <div class="price-top">
+            <h3>Premium</h3>
+            <div class="price-amount"><span class="price-num">—&nbsp;€</span><span class="price-note">à définir</span></div>
+          </div>
+          <ul class="price-list">
+            <li>Site étendu, nombre de pages à définir</li>
+            <li>Rédaction des textes incluse</li>
+            <li>Séance photo ou visuels sur-mesure</li>
+            <li>Suivi et mises à jour sur 6 mois</li>
+            <li>Livraison sous 3 semaines</li>
+          </ul>
+          <a class="btn btn-ghost price-cta" href="#maquette">Demander une maquette</a>
+        </div>
+
       </div>
+  </section>
+
+
+
+  <section class="section-pad lead" id="maquette">
+    <div class="container lead-grid">
+      <div class="reveal">
+        <p class="eyebrow">Sans engagement</p>
+        <h2 data-parallax="1">Une maquette gratuite de votre future page d'accueil</h2>
+        <p class="hero-sub">Décrivez votre activité en quelques mots, je vous envoie une première proposition visuelle sous 3 jours ouvrés — sans obligation d'aller plus loin.</p>
+      </div>
+      <!-- action/method servent de secours : si le JavaScript ne se charge pas,
+           le navigateur envoie le formulaire nativement au lieu de ne rien faire.
+           Quand le JS est actif, il intercepte l'envoi et reste sur la page. -->
+      <form class="form reveal" id="leadForm"
+            action="https://formsubmit.co/alexo.webdesign@gmail.com"
+            method="POST">
+        <input type="hidden" name="_subject" value="Nouvelle demande de maquette gratuite — alexowebdesign.com" />
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
+        <div class="form-row">
+          <div>
+            <label for="name">Nom complet</label>
+            <input id="name" name="name" type="text" placeholder="Jeanne Dupont" required />
+          </div>
+          <div>
+            <label for="email">E-mail</label>
+            <input id="email" name="email" type="email" placeholder="jeanne@exemple.com" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div>
+            <label for="business">Activité / entreprise</label>
+            <input id="business" name="business" type="text" placeholder="Ex. coach sportif, artisan, consultante..." required />
+          </div>
+          <div>
+            <label for="site">Site actuel (optionnel)</label>
+            <input id="site" name="site" type="text" placeholder="https://..." />
+          </div>
+        </div>
+        <div>
+          <label for="msg">Votre projet en quelques mots</label>
+          <textarea id="msg" name="msg" placeholder="Ce que vous vendez, à qui, et ce que doit faire le site..." required></textarea>
+        </div>
+        <button class="btn btn-solid" type="submit">Recevoir ma maquette gratuite</button>
+        <p class="form-note" id="formNote"></p>
+      </form>
     </div>
   </section>
 
@@ -364,51 +455,6 @@
     </div>
   </section>
 
-  <section class="section-pad lead" id="maquette">
-    <div class="container lead-grid">
-      <div class="reveal">
-        <p class="eyebrow">Sans engagement</p>
-        <h2 data-parallax="1">Une maquette gratuite de votre future page d'accueil</h2>
-        <p class="hero-sub">Décrivez votre activité en quelques mots, je vous envoie une première proposition visuelle sous 3 jours ouvrés — sans obligation d'aller plus loin.</p>
-      </div>
-      <!-- action/method servent de secours : si le JavaScript ne se charge pas,
-           le navigateur envoie le formulaire nativement au lieu de ne rien faire.
-           Quand le JS est actif, il intercepte l'envoi et reste sur la page. -->
-      <form class="form reveal" id="leadForm"
-            action="https://formsubmit.co/alexo.webdesign@gmail.com"
-            method="POST">
-        <input type="hidden" name="_subject" value="Nouvelle demande de maquette gratuite — alexowebdesign.com" />
-        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
-        <div class="form-row">
-          <div>
-            <label for="name">Nom complet</label>
-            <input id="name" name="name" type="text" placeholder="Jeanne Dupont" required />
-          </div>
-          <div>
-            <label for="email">E-mail</label>
-            <input id="email" name="email" type="email" placeholder="jeanne@exemple.com" required />
-          </div>
-        </div>
-        <div class="form-row">
-          <div>
-            <label for="business">Activité / entreprise</label>
-            <input id="business" name="business" type="text" placeholder="Ex. coach sportif, artisan, consultante..." required />
-          </div>
-          <div>
-            <label for="site">Site actuel (optionnel)</label>
-            <input id="site" name="site" type="text" placeholder="https://..." />
-          </div>
-        </div>
-        <div>
-          <label for="msg">Votre projet en quelques mots</label>
-          <textarea id="msg" name="msg" placeholder="Ce que vous vendez, à qui, et ce que doit faire le site..." required></textarea>
-        </div>
-        <button class="btn btn-solid" type="submit">Recevoir ma maquette gratuite</button>
-        <p class="form-note" id="formNote"></p>
-      </form>
-    </div>
-  </section>
-
 </main>
 
 <footer class="site-foot" id="contact">
@@ -428,6 +474,6 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=4"></script>
+<script src="assets/js/main.js?v=5"></script>
 </body>
 </html>
