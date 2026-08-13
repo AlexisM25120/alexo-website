@@ -43,14 +43,9 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
-/* La couleur de page vit sur <html> et non sur <body> : le calque du fond
-   animé est en z-index négatif dans body, il serait masqué par un fond de
-   body opaque. */
-html { background: var(--ink); }
-
 body {
   margin: 0;
-  background: transparent;
+  background: var(--ink);
   color: var(--chalk);
   font-family: var(--font-body);
   font-size: 16px;
@@ -94,47 +89,6 @@ a { color: inherit; text-decoration: none; }
   max-width: var(--container);
   margin: 0 auto;
   padding: 0 32px;
-}
-
-/* ---------- fond animé « chemins flottants » ---------- */
-/* Calque fixe, derrière tout le contenu, présent sur chaque page. Le SVG est
-   construit par assets/js/background.js. */
-.bg-paths {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  color: var(--violet);
-  /* Assez présent pour se voir, assez discret pour ne jamais concurrencer le
-     texte : à pleine opacité les tracés passaient au premier plan. */
-  opacity: .26;
-  /* Le masque éteint les tracés vers le centre et le haut, là où se trouve le
-     contenu, et les laisse vivre sur les bords. */
-  -webkit-mask-image: radial-gradient(120% 90% at 50% 38%, transparent 0%, #000 78%);
-  mask-image: radial-gradient(120% 90% at 50% 38%, transparent 0%, #000 78%);
-}
-.bg-paths svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-/* Le second faisceau est retourné pour croiser le premier. */
-.bg-paths svg:last-child { transform: scaleX(-1); }
-
-.bg-paths path {
-  stroke-dasharray: 0.36 0.64;
-  animation: bg-paths-flow var(--dur, 24s) linear infinite;
-  animation-delay: var(--delay, 0s);
-}
-@keyframes bg-paths-flow {
-  to { stroke-dashoffset: -1; }
-}
-
-/* Mouvement réduit : les tracés restent, figés et continus. */
-.bg-paths-static path {
-  stroke-dasharray: none;
-  animation: none;
 }
 
 /* Label mono : la signature typographique du site */
