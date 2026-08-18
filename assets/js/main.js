@@ -77,63 +77,7 @@ const countObserver = new IntersectionObserver(
 );
 document.querySelectorAll('[data-value]').forEach((el) => countObserver.observe(el));
 
-const heroCanvas = document.getElementById('heroGrid');
-if (!reducedMotion && heroCanvas) {
-  // Grille de points du hero : les points se soulèvent autour du curseur
-  const canvas = heroCanvas;
-  const ctx = canvas.getContext('2d');
-  const hero = canvas.parentElement;
-  // La couleur des points vient de la palette CSS : aucune valeur en dur ici,
-  // un changement de --violet-raw se propage donc jusqu'au canvas.
-  const dotRGB = getComputedStyle(document.documentElement)
-    .getPropertyValue('--violet-raw').trim() || '236, 233, 247';
-  const SPACING = 34;
-  const RADIUS = 130;
-  let points = [];
-  let pointer = { x: -9999, y: -9999 };
-
-  const buildGrid = () => {
-    const dpr = window.devicePixelRatio || 1;
-    const { width, height } = hero.getBoundingClientRect();
-    canvas.width = width * dpr;
-    canvas.height = height * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    points = [];
-    for (let y = SPACING / 2; y < height; y += SPACING) {
-      for (let x = SPACING / 2; x < width; x += SPACING) {
-        points.push({ x, y });
-      }
-    }
-  };
-
-  const draw = () => {
-    const { width, height } = canvas;
-    ctx.clearRect(0, 0, width, height);
-    points.forEach((p) => {
-      const dx = p.x - pointer.x;
-      const dy = p.y - pointer.y;
-      const dist = Math.hypot(dx, dy);
-      const pull = dist < RADIUS ? (1 - dist / RADIUS) : 0;
-      const size = 1 + pull * 2.4;
-      ctx.fillStyle = `rgba(${dotRGB}, ${0.07 + pull * 0.45})`;
-      ctx.beginPath();
-      ctx.arc(p.x - dx * pull * 0.18, p.y - dy * pull * 0.18, size, 0, Math.PI * 2);
-      ctx.fill();
-    });
-    requestAnimationFrame(draw);
-  };
-
-  hero.addEventListener('pointermove', (event) => {
-    const rect = hero.getBoundingClientRect();
-    pointer = { x: event.clientX - rect.left, y: event.clientY - rect.top };
-  });
-  hero.addEventListener('pointerleave', () => {
-    pointer = { x: -9999, y: -9999 };
-  });
-  window.addEventListener('resize', buildGrid);
-  buildGrid();
-  draw();
-
+if (!reducedMotion) {
   // Curseur personnalisé, grossit sur les éléments cliquables
   const cursor = document.getElementById('cursor');
   if (cursor) {
@@ -147,126 +91,71 @@ if (!reducedMotion && heroCanvas) {
       el.addEventListener('pointerleave', () => cursor.classList.remove('grow'));
     });
   }
+}
 
-  // Boutons magnétiques
-  document.querySelectorAll('.magnetic').forEach((el) => {
-    el.addEventListener('pointermove', (event) => {
-      const rect = el.getBoundingClientRect();
-      const mx = (event.clientX - rect.left - rect.width / 2) * 0.28;
-      const my = (event.clientY - rect.top - rect.height / 2) * 0.28;
-      el.style.setProperty('--mx', `${mx}px`);
-      el.style.setProperty('--my', `${my}px`);
-    });
-    el.addEventListener('pointerleave', () => {
-      el.style.setProperty('--mx', '0px');
-      el.style.setProperty('--my', '0px');
-    });
+// Inclinaison 3D d'un élément selon la position du curseur.
+// Défini ici depuis le retrait du hero animé : la galerie s'en sert encore.
+const tilt3d = (el, maxDeg = 10, lift = 0) => {
+  if (!el || reducedMotion) return;
+  el.addEventListener('pointermove', (event) => {
+    const rect = el.getBoundingClientRect();
+    const rx = ((event.clientY - rect.top) / rect.height - 0.5) * -maxDeg;
+    const ry = ((event.clientX - rect.left) / rect.width - 0.5) * maxDeg;
+    el.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateZ(${lift}px)`;
   });
+  el.addEventListener('pointerleave', () => {
+    el.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0px)';
+  });
+};
 
-  // La fenêtre du hero s'incline selon la position du curseur
-  const heroMark = document.getElementById('heroMark');
-  const browser = heroMark && heroMark.querySelector('.browser');
-  if (heroMark && browser) {
-    heroMark.addEventListener('pointermove', (event) => {
-      const rect = heroMark.getBoundingClientRect();
-      const rx = ((event.clientY - rect.top) / rect.height - 0.5) * -12;
-      const ry = ((event.clientX - rect.left) / rect.width - 0.5) * 12;
-      browser.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
-    });
-    heroMark.addEventListener('pointerleave', () => {
-      browser.style.transform = 'rotateX(0) rotateY(0)';
-    });
-  }
+const rail = document.getElementById('workRail');
+if (rail) {
+  const cards = [...rail.querySelectorAll('.work-card')];
 
-  // Inclinaison 3D d'un élément selon la position du curseur
-  const tilt3d = (el, maxDeg = 10, lift = 0) => {
-    el.addEventListener('pointermove', (event) => {
-      const rect = el.getBoundingClientRect();
-      const rx = ((event.clientY - rect.top) / rect.height - 0.5) * -maxDeg;
-      const ry = ((event.clientX - rect.left) / rect.width - 0.5) * maxDeg;
-      el.style.transform =
-        `rotateX(${rx}deg) rotateY(${ry}deg) translateZ(${lift}px)`;
-    });
-    el.addEventListener('pointerleave', () => {
-      el.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0px)';
+  // Chaque carte pivote et recule selon sa distance au centre du rail
+  const project = () => {
+    const railCenter = rail.scrollLeft + rail.clientWidth / 2;
+    cards.forEach((card) => {
+      const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+      const offset = (cardCenter - railCenter) / rail.clientWidth;
+      const clamped = Math.max(-1, Math.min(1, offset));
+      card.style.setProperty('--rot', `${clamped * -26}deg`);
+      card.style.setProperty('--depth', `${-Math.abs(clamped) * 180}px`);
     });
   };
 
-  // Le tilt reste réservé aux objets (écrans, fenêtres) : faire pivoter des
-  // blocs de texte nuit à la lecture et fait « gadget ».
+  rail.addEventListener('scroll', project, { passive: true });
+  window.addEventListener('resize', project);
+  project();
 
-  // Parallaxe douce : chaque section légèrement décalée selon sa position
-  const parallaxEls = document.querySelectorAll('[data-parallax]');
-  if (parallaxEls.length) {
-    let ticking = false;
-    const applyParallax = () => {
-      const vh = window.innerHeight;
-      parallaxEls.forEach((el) => {
-        const rect = el.getBoundingClientRect();
-        const progress = (rect.top + rect.height / 2 - vh / 2) / vh;
-        const strength = Number(el.dataset.parallax) || 1;
-        el.style.transform = `translate3d(0, ${-progress * 22 * strength}px, 0)`;
-      });
-      ticking = false;
-    };
-    window.addEventListener('scroll', () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(applyParallax);
-    }, { passive: true });
-    applyParallax();
+  // Les écrans s'inclinent aussi sous le curseur, en plus du carrousel
+  cards.forEach((card) => tilt3d(card.querySelector('.wc-screen'), 12, 30));
+
+  let dragging = false;
+  let startX = 0;
+  let startScroll = 0;
+  rail.addEventListener('pointerdown', (event) => {
+    dragging = true;
+    startX = event.clientX;
+    startScroll = rail.scrollLeft;
+    rail.classList.add('dragging');
+    rail.setPointerCapture(event.pointerId);
+  });
+  rail.addEventListener('pointermove', (event) => {
+    if (!dragging) return;
+    rail.scrollLeft = startScroll - (event.clientX - startX) * 1.4;
+  });
+  const stop = () => { dragging = false; rail.classList.remove('dragging'); };
+  rail.addEventListener('pointerup', stop);
+  rail.addEventListener('pointercancel', stop);
+  // Pas de détournement de la molette ici.
+  // L'ancienne version convertissait le défilement vertical en défilement
+  // horizontal et appelait preventDefault() à chaque coup de molette. Une fois
+  // la galerie arrivée en butée, scrollLeft ne bougeait plus mais le
+  // preventDefault continuait de bloquer la page : le curseur posé sur la
+  // galerie figeait tout le site. La molette reste donc à la page ; le
+  // défilement horizontal se fait au glisser, au doigt ou au clavier.
   }
-
-  // Galerie de réalisations : carrousel 3D, glisser + molette
-  const rail = document.getElementById('workRail');
-  if (rail) {
-    const cards = [...rail.querySelectorAll('.work-card')];
-
-    // Chaque carte pivote et recule selon sa distance au centre du rail
-    const project = () => {
-      const railCenter = rail.scrollLeft + rail.clientWidth / 2;
-      cards.forEach((card) => {
-        const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-        const offset = (cardCenter - railCenter) / rail.clientWidth;
-        const clamped = Math.max(-1, Math.min(1, offset));
-        card.style.setProperty('--rot', `${clamped * -26}deg`);
-        card.style.setProperty('--depth', `${-Math.abs(clamped) * 180}px`);
-      });
-    };
-
-    rail.addEventListener('scroll', project, { passive: true });
-    window.addEventListener('resize', project);
-    project();
-
-    // Les écrans s'inclinent aussi sous le curseur, en plus du carrousel
-    cards.forEach((card) => tilt3d(card.querySelector('.wc-screen'), 12, 30));
-
-    let dragging = false;
-    let startX = 0;
-    let startScroll = 0;
-    rail.addEventListener('pointerdown', (event) => {
-      dragging = true;
-      startX = event.clientX;
-      startScroll = rail.scrollLeft;
-      rail.classList.add('dragging');
-      rail.setPointerCapture(event.pointerId);
-    });
-    rail.addEventListener('pointermove', (event) => {
-      if (!dragging) return;
-      rail.scrollLeft = startScroll - (event.clientX - startX) * 1.4;
-    });
-    const stop = () => { dragging = false; rail.classList.remove('dragging'); };
-    rail.addEventListener('pointerup', stop);
-    rail.addEventListener('pointercancel', stop);
-    // Pas de détournement de la molette ici.
-    // L'ancienne version convertissait le défilement vertical en défilement
-    // horizontal et appelait preventDefault() à chaque coup de molette. Une fois
-    // la galerie arrivée en butée, scrollLeft ne bougeait plus mais le
-    // preventDefault continuait de bloquer la page : le curseur posé sur la
-    // galerie figeait tout le site. La molette reste donc à la page ; le
-    // défilement horizontal se fait au glisser, au doigt ou au clavier.
-  }
-}
 
 // Formulaire "maquette gratuite"
 // Envoi via FormSubmit (https://formsubmit.co) : aucun compte à créer,

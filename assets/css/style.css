@@ -1,36 +1,37 @@
 /* ==========================================================================
    Alexo — Studio web
-   Direction : fond encre violacée, grande typographie serif éditoriale, mono
-   pour les labels. Titres et accents en violet, corps de texte neutre pour
-   rester lisible. Toute la palette est définie dans :root ci-dessous.
+   Direction : fond noir, gris et blanc pour la base, verts pour les accents
+   et les appels à l'action. Grande typographie serif éditoriale, mono pour
+   les labels. Toute la palette est définie dans :root ci-dessous.
 
    Type   : Instrument Serif (titres) · Inter (texte) · Martian Mono (labels)
    Police du logo à venir : remplacer --font-display une fois reçue.
    ========================================================================== */
 
 :root {
-  /* Palette — encre violacée, accents violets.
+  /* Palette — base noir / gris / blanc, accents verts.
      Toutes les couleurs du site descendent de ces variables : changer une
      teinte ici la propage partout, aucune valeur n'est écrite en dur ailleurs.
      Les rapports de contraste indiqués sont mesurés sur --ink et vérifiés
      conformes WCAG AA (4.5:1 minimum pour du texte normal). */
-  --ink:        #0a0713;   /* fond principal — noir profond teinté violet */
-  --ink-raised: #15102a;   /* surfaces au-dessus du fond */
+  --ink:        #0a0c0b;   /* noir de fond, très légèrement vert */
+  --ink-raised: #141917;   /* surfaces au-dessus du fond */
 
-  --chalk:      #ece9f7;   /* texte principal      — 16.7:1 */
-  --chalk-dim:  #ada4cc;   /* texte secondaire     —  8.5:1 */
-  --chalk-mute: #8b82ab;   /* légendes, sources    —  5.6:1 */
+  --chalk:      #f1f5f2;   /* texte principal      — 17.8:1 */
+  --chalk-dim:  #adb6b0;   /* texte secondaire     —  9.4:1 */
+  --chalk-mute: #8a938c;   /* légendes, sources    —  6.2:1 */
 
-  --violet:     #b49bff;   /* titres et accents    —  8.6:1 */
-  --violet-dim: #9b86e0;   /* accents secondaires  —  6.5:1 */
-  --violet-raw: 180, 155, 255;  /* composantes RVB, pour les transparences */
+  --green:      #5fe08d;   /* accents, titres mis en avant, boutons — 11.7:1 */
+  --green-dim:  #3fbe74;   /* accents secondaires  —  8.3:1 */
+  --forest:     #12301d;   /* vert profond : surfaces seulement, jamais du texte */
+  --green-raw:  95, 224, 141;   /* composantes RVB, pour les transparences */
 
-  --rule:       rgba(var(--violet-raw), .20);
-  --rule-soft:  rgba(var(--violet-raw), .10);
-  --glow:       rgba(var(--violet-raw), .13);   /* halo diffus du hero */
-  --veil:       rgba(10, 7, 19, .82);           /* barre de nav translucide */
-  --danger:     #ff9b9b;   /* message d'erreur     —  8.0:1 */
-  --status:     #5fe3a1;   /* pastille « disponible » — 11.5:1 */
+  --rule:       rgba(var(--green-raw), .18);
+  --rule-soft:  rgba(var(--green-raw), .09);
+  --glow:       rgba(var(--green-raw), .10);
+  --veil:       rgba(10, 12, 11, .84);
+  --danger:     #ff9b9b;
+  --status:     var(--green);
 
   --font-display: "Instrument Serif", Georgia, "Times New Roman", serif;
   --font-body:    "Inter", "Helvetica Neue", Arial, sans-serif;
@@ -53,12 +54,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-::selection { background: var(--violet); color: var(--ink); }
+::selection { background: var(--green); color: var(--ink); }
 
 /* ---------- typographie ---------- */
 h1, h2 {
   font-family: var(--font-display);
-  color: var(--violet);
+  color: var(--green);
   font-weight: 400;
   line-height: .96;
   letter-spacing: -0.015em;
@@ -78,7 +79,7 @@ h3 {
 
 h1 em, h2 em {
   font-style: italic;
-  color: var(--violet-dim);
+  color: var(--green-dim);
 }
 
 p { margin: 0 0 1em; color: var(--chalk-dim); }
@@ -98,7 +99,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 400;
   letter-spacing: .22em;
   text-transform: uppercase;
-  color: var(--violet-dim);
+  color: var(--green-dim);
   margin: 0 0 26px;
 }
 
@@ -139,12 +140,12 @@ a { color: inherit; text-decoration: none; }
 }
 .btn:hover::before { transform: scaleY(1); }
 
-.btn-solid { background: var(--violet); border-color: var(--violet); color: var(--ink); }
+.btn-solid { background: var(--green); border-color: var(--green); color: var(--ink); }
 .btn-solid::before { background: var(--ink); }
 .btn-solid:hover { color: var(--chalk); }
 
 .btn-ghost { background: transparent; color: var(--chalk); }
-.btn-ghost::before { background: var(--violet); }
+.btn-ghost::before { background: var(--green); }
 .btn-ghost:hover { color: var(--ink); }
 
 .btn-line {
@@ -199,7 +200,7 @@ a { color: inherit; text-decoration: none; }
   transition: color .3s ease;
   white-space: nowrap;
 }
-.nav a:hover { color: var(--violet); }
+.nav a:hover { color: var(--green); }
 .nav-cta { padding: 11px 22px; font-size: .62rem; white-space: nowrap; }
 
 .burger {
@@ -273,171 +274,151 @@ a { color: inherit; text-decoration: none; }
   flex: none;
   border-radius: 50%;
   background: var(--status);
-  box-shadow: 0 0 0 0 rgba(95, 227, 161, .55);
+  box-shadow: 0 0 0 0 rgba(var(--green-raw), .55);
   animation: pulse 2.4s ease-out infinite;
 }
 @keyframes pulse {
-  70%  { box-shadow: 0 0 0 9px rgba(95, 227, 161, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(95, 227, 161, 0); }
+  70%  { box-shadow: 0 0 0 9px rgba(var(--green-raw), 0); }
+  100% { box-shadow: 0 0 0 0 rgba(var(--green-raw), 0); }
 }
 
 /* ---------- hero ---------- */
+/* Hero statique : titre, sous-titre, appel à l'action, réassurance.
+   L'ancienne version portait un canvas animé, une fenêtre de navigateur
+   inclinable et une révélation ligne par ligne ; tout cela a été retiré. */
 .hero {
   position: relative;
-  padding: 140px 0 110px;
+  padding: 190px 0 96px;
   overflow: hidden;
 }
-/* Halo violet diffus, purement décoratif : il pose la couleur derrière le
-   titre sans jamais passer sous du texte à contraste critique. */
 .hero::before {
   content: "";
   position: absolute;
-  top: -22%;
-  left: 46%;
-  width: min(1100px, 78vw);
+  top: -30%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1200px, 92vw);
   aspect-ratio: 1;
-  background: radial-gradient(circle, var(--glow) 0%, transparent 68%);
+  background: radial-gradient(circle, var(--glow) 0%, transparent 66%);
   pointer-events: none;
   z-index: 0;
 }
-.hero-grid-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-}
-.hero-grid {
+.hero-inner {
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-columns: 1.25fr .75fr;
-  gap: 64px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  text-align: center;
 }
+.hero h1 { max-width: 18ch; color: var(--chalk); }
+/* Les mots forts de la phrase, et eux seuls, passent en vert. */
+.hero h1 em { font-style: normal; color: var(--green); }
 .hero-sub {
-  font-size: 1.02rem;
+  max-width: 60ch;
+  font-size: 1.06rem;
   color: var(--chalk-dim);
 }
-.hero-cta { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 40px; }
+.hero-cta { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 34px; }
 
-/* Entrée orchestrée */
-.hero-copy > * {
-  opacity: 0;
-  transform: translateY(26px);
-  animation: rise 1s var(--ease) forwards;
-}
-.hero-copy > *:nth-child(1) { animation-delay: .08s; }
-.hero-copy > *:nth-child(2) { animation-delay: .18s; }
-.hero-copy > *:nth-child(3) { animation-delay: .3s; }
-.hero-copy > *:nth-child(4) { animation-delay: .42s; }
-
-@keyframes rise { to { opacity: 1; transform: translateY(0); } }
-
-/* Titre révélé ligne par ligne derrière un masque ;
-   le padding compense les descendantes qu'overflow:hidden rognerait. */
-h1 .line-mask {
-  display: block;
-  overflow: hidden;
-  padding-bottom: .1em;
-  margin-bottom: -.1em;
-}
-h1 .line-inner {
-  display: block;
-  transform: translateY(105%);
-  animation: lineUp 1.15s var(--ease) forwards;
-}
-h1 .line-mask:nth-child(2) .line-inner { animation-delay: .14s; }
-@keyframes lineUp { to { transform: translateY(0); } }
-
-.hero-mark {
+/* ---------- réassurance ---------- */
+.trust-row {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  opacity: 0;
-  animation: rise 1.2s var(--ease) .38s forwards;
-  perspective: 1000px;
+  gap: 12px;
+  list-style: none;
+  margin: 56px 0 0;
+  padding: 0;
 }
-
-/* Fenêtre de navigateur : un site miniature qui se dessine en boucle */
-.browser {
-  width: 100%;
+.trust-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px 10px 14px;
   border: 1px solid var(--rule);
+  border-radius: 999px;
   background: var(--ink-raised);
-  transform-style: preserve-3d;
-  transition: transform .5s var(--ease);
-}
-.browser-bar {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 11px 16px;
-  border-bottom: 1px solid var(--rule-soft);
-}
-.browser-bar .dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--chalk-mute);
-}
-.browser-url {
-  margin-left: 14px;
   font-family: var(--font-mono);
-  font-size: .58rem;
-  letter-spacing: .08em;
-  color: var(--chalk-mute);
+  font-size: .6rem;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--chalk-dim);
+  text-align: left;
 }
-.browser-body { padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+.trust-badge svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  fill: none;
+  stroke: var(--green);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 
-.bw-nav {
+@media (max-width: 760px) {
+  .hero { padding: 150px 0 72px; }
+  .trust-badge { font-size: .56rem; padding: 9px 14px 9px 12px; }
+}
+
+/* ---------- diagramme « pas seulement du design » ---------- */
+.node-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--rule-soft);   /* les interstices dessinent la grille */
+  border: 1px solid var(--rule-soft);
+}
+.node {
+  background: var(--ink);
+  padding: 40px 34px 44px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--rule-soft);
+  flex-direction: column;
+  gap: 4px;
 }
-.bw-logo { width: 42px; height: 8px; background: var(--chalk); }
-.bw-links { display: flex; gap: 7px; }
-.bw-links i { width: 20px; height: 4px; background: var(--chalk-mute); opacity: .5; }
-
-.bw-hero { display: flex; flex-direction: column; gap: 9px; }
-.bw-title { height: 13px; width: 86%; background: var(--chalk); }
-.bw-title.short { width: 54%; opacity: .5; }
-.bw-text { height: 5px; width: 100%; background: var(--chalk-mute); opacity: .4; margin-top: 5px; }
-.bw-text.short { width: 70%; }
-.bw-btn { height: 20px; width: 42%; background: var(--chalk); margin-top: 10px; border-radius: 999px; }
-
-.bw-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.bw-cards span { height: 42px; border: 1px solid var(--rule-soft); }
-
-.browser-body > div > *,
-.bw-cards span {
-  transform-origin: left;
-  animation: build 6.5s ease-in-out infinite;
+.node-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 22px;
+  border-radius: 12px;
+  background: var(--forest);
+  border: 1px solid var(--rule);
 }
-.bw-logo { animation-delay: .1s; }
-.bw-links { animation-delay: .2s; }
-.bw-title { animation-delay: .5s; }
-.bw-title.short { animation-delay: .65s; }
-.bw-text { animation-delay: .8s; }
-.bw-text.short { animation-delay: .9s; }
-.bw-btn { animation-delay: 1.1s; }
-.bw-cards span:nth-child(1) { animation-delay: 1.35s; }
-.bw-cards span:nth-child(2) { animation-delay: 1.5s; }
-.bw-cards span:nth-child(3) { animation-delay: 1.65s; }
+.node-icon svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: var(--green);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.node h3 { color: var(--chalk); margin-bottom: .35em; }
+.node p { margin: 0; font-size: .94rem; }
 
-@keyframes build {
-  0%, 4%   { transform: scaleX(0); opacity: 0; }
-  14%, 88% { transform: scaleX(1); opacity: 1; }
-  100%     { transform: scaleX(1); opacity: 1; }
+@media (max-width: 1000px) { .node-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .node-grid { grid-template-columns: 1fr; } .node { padding: 32px 26px 34px; } }
+
+/* Appel à l'action en fin de section */
+.section-cta { margin-top: 56px; display: flex; justify-content: center; }
+
+/* Jalon de temps sous chaque étape du déroulé */
+.step-when {
+  margin: 8px 0 0;
+  font-family: var(--font-mono);
+  font-size: .56rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--green-dim);
 }
 
-@media (max-width: 900px) {
-  .hero { padding: 90px 0 70px; }
-  .hero-grid { grid-template-columns: 1fr; gap: 48px; }
-  .hero-mark { order: -1; justify-content: flex-start; }
-  .browser { max-width: 320px; }
-}
+.foot-cta { margin-bottom: 18px; }
 
 /* ---------- structure des sections ---------- */
 .section-pad { padding: 130px 0; border-top: 1px solid var(--rule-soft); }
@@ -756,7 +737,7 @@ h1 .line-mask:nth-child(2) .line-inner { animation-delay: .14s; }
   font-size: clamp(1.6rem, 2.6vw, 2.3rem);
   line-height: 1.14;
   letter-spacing: -0.015em;
-  color: var(--violet);
+  color: var(--green);
   text-wrap: balance;
 }
 .pull-quote figcaption {
@@ -837,7 +818,7 @@ h1 .line-mask:nth-child(2) .line-inner { animation-delay: .14s; }
    déclarée plus bas et repose son `border` en raccourci, ce qui écraserait
    un simple .price-card-feature à spécificité égale. */
 .price-card.price-card-feature {
-  border-color: var(--violet);
+  border-color: var(--green);
   background: var(--ink-raised);
 }
 
@@ -883,14 +864,14 @@ h1 .line-mask:nth-child(2) .line-inner { animation-delay: .14s; }
   font-size: .58rem;
   letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--violet-dim);
+  color: var(--green-dim);
 }
 .price-flag {
   align-self: flex-start;
   margin: 0 0 18px;
   padding: 5px 13px;
   border-radius: 999px;
-  background: var(--violet);
+  background: var(--green);
   color: var(--ink);
   font-family: var(--font-mono);
   font-size: .55rem;
@@ -1030,7 +1011,7 @@ textarea { min-height: 110px; resize: vertical; }
   pointer-events: none;
   background:
     radial-gradient(60vw 48vw at 78% -8%, var(--glow) 0%, transparent 62%),
-    radial-gradient(52vw 42vw at 8% 108%, rgba(var(--violet-raw), .09) 0%, transparent 64%);
+    radial-gradient(52vw 42vw at 8% 108%, rgba(var(--green-raw), .09) 0%, transparent 64%);
 }
 .legal-body h2 {
   font-size: clamp(1.4rem, 2.4vw, 1.9rem);
@@ -1047,7 +1028,7 @@ textarea { min-height: 110px; resize: vertical; }
   font-weight: 400;
   letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--violet);
+  color: var(--green);
 }
 
 .legal-body a { border-bottom: 1px solid var(--rule); }
@@ -1123,7 +1104,7 @@ textarea { min-height: 110px; resize: vertical; }
 .progress-fill {
   height: 100%;
   width: 0;
-  background: var(--violet);
+  background: var(--green);
   transition: width .12s linear;
 }
 
@@ -1185,8 +1166,8 @@ input:focus-visible, textarea:focus-visible { outline-offset: 1px; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
-  .hero-copy > *, .hero-mark { opacity: 1; transform: none; animation: none; }
-  h1 .line-inner { transform: none; animation: none; }
+  .hero-copy > *, 
+  
   .browser-body > div > *, .bw-cards span { animation: none; }
   .cursor { display: none; }
   .magnetic { transform: none; }

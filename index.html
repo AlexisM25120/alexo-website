@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500&family=Martian+Mono:wght@300;400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=9" />
+  <link rel="stylesheet" href="assets/css/style.css?v=10" />
 </head>
 <body>
 
@@ -40,7 +40,7 @@
       <a href="#faq">FAQ</a>
       <a href="#contact">Contact</a>
     </nav>
-    <a class="btn btn-solid nav-cta" href="#maquette">Maquette gratuite</a>
+    <a class="btn btn-solid nav-cta" href="#maquette">Réservez votre appel</a>
     <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -59,68 +59,82 @@
 <main>
 
   <section class="hero" id="top">
-    <canvas id="heroGrid" class="hero-grid-canvas" aria-hidden="true"></canvas>
-    <div class="container hero-grid">
-      <div class="hero-copy" id="heroCopy">
-        <p class="eyebrow">Studio web indépendant — Besançon</p>
-        <!-- INDICATEUR DE DISPONIBILITÉ — texte à changer ici. -->
-        <p class="status"><span class="status-dot" aria-hidden="true"></span>Disponible — j'accepte de nouveaux projets</p>
-        <h1><span class="line-mask"><span class="line-inner">Un site simple,</span></span><span class="line-mask"><span class="line-inner">qui travaille <em>pour vous.</em></span></span></h1>
-        <p class="hero-sub">Je conçois des sites vitrines sobres et efficaces pour les indépendants et petites entreprises de <strong>Besançon et du Doubs</strong> — fait main, sans template recyclé, sans surprise sur la facture.</p>
-        <div class="hero-cta">
-          <a class="btn btn-solid magnetic" href="#maquette">Recevoir ma maquette gratuite</a>
-          <a class="btn btn-ghost magnetic" href="#tarif">Voir les tarifs</a>
-        </div>
+    <div class="container hero-inner">
+      <p class="eyebrow">Studio web indépendant — Besançon</p>
+      <p class="status"><span class="status-dot" aria-hidden="true"></span>Disponible — j'accepte de nouveaux projets</p>
+      <h1>Nous créons des sites web qui <em>génèrent des ventes</em> pour les entreprises du Doubs</h1>
+      <p class="hero-sub">Fait main, pensé pour convertir vos visiteurs en clients — sans template recyclé et sans surprise sur la facture.</p>
+      <div class="hero-cta">
+        <a class="btn btn-solid" href="#maquette">Réservez votre appel</a>
+        <a class="btn btn-ghost" href="#tarif">Voir les tarifs</a>
       </div>
-      <div class="hero-mark" id="heroMark" aria-hidden="true">
-        <div class="browser">
-          <div class="browser-bar">
-            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-            <span class="browser-url">votre-cabinet.fr</span>
-          </div>
-          <div class="browser-body">
-            <div class="bw-nav">
-              <span class="bw-logo"></span>
-              <span class="bw-links"><i></i><i></i><i></i></span>
-            </div>
-            <div class="bw-hero">
-              <span class="bw-title"></span>
-              <span class="bw-title short"></span>
-              <span class="bw-text"></span>
-              <span class="bw-text short"></span>
-              <span class="bw-btn"></span>
-            </div>
-            <div class="bw-cards"><span></span><span></span><span></span></div>
-          </div>
-        </div>
-      </div>
+
+      <!-- Elements de reassurance : uniquement des engagements verifiables,
+           repris des CGV. Aucun avis, logo ni note inventes. -->
+      <ul class="trust-row">
+        <li class="trust-badge">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          <span>Sans engagement</span>
+        </li>
+        <li class="trust-badge">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+          <span>Jusqu'à 3 refontes de design incluses</span>
+        </li>
+        <li class="trust-badge">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <span>Livraison en 1 à 2 semaines</span>
+        </li>
+        <li class="trust-badge">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+          <span>Basé en Franche-Comté, je connais vos clients locaux</span>
+        </li>
+      </ul>
     </div>
   </section>
 
-
-  <section class="section-pad" id="approche">
+  <section class="section-pad why" id="approche">
     <div class="container">
       <div class="section-head reveal">
-        <p class="eyebrow">Pourquoi Alexo</p>
-        <h2 data-parallax="1">Ce que ça change de travailler avec moi</h2>
+        <p class="eyebrow">Ce que vous obtenez vraiment</p>
+        <h2>Pourquoi votre nouveau site ne sera pas seulement du <em>design</em></h2>
+        <p>Un beau site qui ne vend rien reste une dépense. Chaque décision est prise pour transformer un visiteur en client.</p>
       </div>
-      <div class="value-grid">
-        <div class="value-card reveal">
-          <h3>Fait main, pas un template</h3>
-          <p>Chaque site est conçu et codé sur-mesure pour votre activité — pas un thème WordPress recyclé habillé de vos couleurs.</p>
-        </div>
-        <div class="value-card reveal">
-          <h3>Un interlocuteur, pas une agence</h3>
-          <p>Vous parlez directement à la personne qui dessine et développe votre site, du premier brief jusqu'à la mise en ligne.</p>
-        </div>
-        <div class="value-card reveal">
-          <h3>Prix fixe, annoncé d'avance</h3>
-          <p>Chaque forfait est annoncé d'avance, acompte compris. Pas de ligne surprise en fin de projet.</p>
-        </div>
-        <div class="value-card reveal">
-          <h3>Rapide et léger</h3>
-          <p>Des sites optimisés qui se chargent vite, s'affichent bien sur mobile et se classent correctement sur Google.</p>
-        </div>
+
+      <ul class="node-grid">
+        <li class="node reveal">
+          <span class="node-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 4h18v5H3zM3 13h8v7H3zM15 13h6v7h-6z"/></svg></span>
+          <h3>Structure orientée conversion</h3>
+          <p>Chaque page suit un parcours pensé : ce que voit le visiteur, dans quel ordre, et ce qu'il fait ensuite.</p>
+        </li>
+        <li class="node reveal">
+          <span class="node-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg></span>
+          <h3>Rapidité sur mobile</h3>
+          <p>Plus de la moitié de vos visiteurs arrivent du téléphone. Un site lourd les perd avant même de s'afficher.</p>
+        </li>
+        <li class="node reveal">
+          <span class="node-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+          <h3>Fondations SEO intégrées</h3>
+          <p>Balises, titres, structure et vitesse sont propres dès la livraison, pas rattrapés après coup.</p>
+        </li>
+        <li class="node reveal">
+          <span class="node-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h11a4 4 0 0 1 0 8H8"/><path d="m11 10-3 3 3 3"/></svg></span>
+          <h3>Appels à l'action explicites</h3>
+          <p>Appeler, écrire, réserver : l'action attendue est visible à tout moment, jamais enfouie en bas de page.</p>
+        </li>
+        <li class="node reveal">
+          <span class="node-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"/></svg></span>
+          <h3>Visibilité sur les recherches locales</h3>
+          <p>Ville, zone d'intervention et informations pratiques sont exploitables par Google, pas seulement lisibles.</p>
+        </li>
+        <li class="node reveal">
+          <span class="node-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span>
+          <h3>Facile à faire vivre</h3>
+          <p>Changer un texte, un tarif, une photo : vous le faites vous-même, sans dépendre de personne.</p>
+        </li>
+      </ul>
+
+      <div class="section-cta reveal">
+        <a class="btn btn-solid" href="#maquette">Réservez votre appel</a>
       </div>
     </div>
   </section>
@@ -247,18 +261,68 @@
     </div>
   </section>
 
-  <section class="section-pad process">
+  <section class="section-pad process" id="deroule">
     <div class="container">
       <div class="section-head reveal">
         <p class="eyebrow">Déroulé</p>
-        <h2 data-parallax="1">Comment ça se passe</h2>
+        <h2>Du premier appel à la <em>mise en ligne</em></h2>
+        <p>Six étapes, une à deux semaines au total pour le forfait Site Vitrine. Les délais courent à partir de la réception de vos contenus.</p>
       </div>
+
       <ol class="steps">
-        <li class="reveal"><span class="step-num">1</span><div><h3>Brief</h3><p>Un échange de 30 minutes pour cerner votre activité, vos objectifs et vos préférences.</p></div></li>
-        <li class="reveal"><span class="step-num">2</span><div><h3>Maquette gratuite</h3><p>Une première proposition visuelle de votre page d'accueil, sans engagement de votre part.</p></div></li>
-        <li class="reveal"><span class="step-num">3</span><div><h3>Réalisation</h3><p>Design et développement du site complet, livré sous deux semaines.</p></div></li>
-        <li class="reveal"><span class="step-num">4</span><div><h3>Mise en ligne & suivi</h3><p>Publication du site et 30 jours d'ajustements inclus après la livraison.</p></div></li>
+        <li class="reveal">
+          <span class="step-num">1</span>
+          <div>
+            <h3>Appel de découverte</h3>
+            <p>30 minutes pour comprendre votre métier, vos clients et ce que le site doit déclencher.</p>
+            <p class="step-when">Jour 1</p>
+          </div>
+        </li>
+        <li class="reveal">
+          <span class="step-num">2</span>
+          <div>
+            <h3>Stratégie et arborescence</h3>
+            <p>Je définis les pages, leur ordre et le parcours du visiteur jusqu'à la prise de contact.</p>
+            <p class="step-when">Jour 1-2</p>
+          </div>
+        </li>
+        <li class="reveal">
+          <span class="step-num">3</span>
+          <div>
+            <h3>Maquette gratuite</h3>
+            <p>Une première proposition visuelle de votre page d'accueil, sans engagement de votre part.</p>
+            <p class="step-when">Jour 2-3</p>
+          </div>
+        </li>
+        <li class="reveal">
+          <span class="step-num">4</span>
+          <div>
+            <h3>Design et développement</h3>
+            <p>Le site complet est dessiné puis codé sur-mesure, adapté à tous les écrans.</p>
+            <p class="step-when">Jour 3-8</p>
+          </div>
+        </li>
+        <li class="reveal">
+          <span class="step-num">5</span>
+          <div>
+            <h3>Relecture et révisions</h3>
+            <p>Vous relisez, je corrige. Jusqu'à trois séries de révisions sont comprises.</p>
+            <p class="step-when">Jour 8-11</p>
+          </div>
+        </li>
+        <li class="reveal">
+          <span class="step-num">6</span>
+          <div>
+            <h3>Mise en ligne</h3>
+            <p>Publication, vérifications finales, puis 30 jours d'ajustements inclus.</p>
+            <p class="step-when">Jour 11-14</p>
+          </div>
+        </li>
       </ol>
+
+      <div class="section-cta reveal">
+        <a class="btn btn-solid" href="#maquette">Réservez votre appel</a>
+      </div>
     </div>
   </section>
 
@@ -287,7 +351,7 @@
             <li>Jusqu'à 3 séries de révisions offertes</li>
             <li>Livraison en 1 à 2 semaines</li>
           </ul>
-          <a class="btn btn-ghost price-cta" href="#maquette">Demander une maquette</a>
+          <a class="btn btn-ghost price-cta" href="#maquette">Réservez votre appel</a>
         </div>
 
         <div class="price-card price-card-feature reveal">
@@ -327,7 +391,7 @@
             <li>Engagement de 6 mois minimum</li>
           </ul>
           <p class="price-terms">Le budget publicitaire versé à Google ou Meta n'est pas compris : ce montant couvre uniquement les honoraires de gestion.</p>
-          <a class="btn btn-ghost price-cta" href="#maquette">En parler ensemble</a>
+          <a class="btn btn-ghost price-cta" href="#maquette">Réservez votre appel</a>
         </div>
 
       </div>
@@ -466,6 +530,7 @@
       <p class="foot-tag">Studio de création de sites web — indépendant<br />Besançon, Doubs — Franche-Comté</p>
     </div>
     <div class="foot-contact">
+      <a class="btn btn-solid foot-cta" href="#maquette">Réservez votre appel</a>
       <a href="mailto:alexo.webdesign@gmail.com">alexo.webdesign@gmail.com</a>
       <p class="foot-zone">Besançon et 40 km alentour — déplacements possibles, échanges à distance partout ailleurs.</p>
     </div>
@@ -476,6 +541,6 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=9"></script>
+<script src="assets/js/main.js?v=10"></script>
 </body>
 </html>
