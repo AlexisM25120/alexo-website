@@ -35,6 +35,31 @@ const observer = new IntersectionObserver(
 );
 revealEls.forEach((el) => observer.observe(el));
 
+// Frise du déroulé : chaque étape apparaît à son tour au défilement.
+// Un observateur distinct de celui des `.reveal` : le seuil est plus bas et
+// le décalage se calcule sur la position dans la frise, pour que les étapes
+// s'enchaînent au lieu d'apparaître toutes ensemble.
+const tlSteps = [...document.querySelectorAll('.tl-step')];
+if (tlSteps.length) {
+  if (reducedMotion) {
+    tlSteps.forEach((el) => el.classList.add('in-view'));
+  } else {
+    const tlObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.style.transitionDelay =
+            `${Math.min(tlSteps.indexOf(entry.target), 2) * 0.12}s`;
+          entry.target.classList.add('in-view');
+          tlObserver.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.3, rootMargin: '0px 0px -8% 0px' }
+    );
+    tlSteps.forEach((el) => tlObserver.observe(el));
+  }
+}
+
 // Barre de progression de lecture
 const progressFill = document.getElementById('progressFill');
 if (progressFill) {

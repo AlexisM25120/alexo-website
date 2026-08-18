@@ -1,43 +1,58 @@
 /* ==========================================================================
    Alexo — Studio web
-   Direction : fond noir, gris et blanc pour la base, verts pour les accents
-   et les appels à l'action. Grande typographie serif éditoriale, mono pour
-   les labels. Toute la palette est définie dans :root ci-dessous.
 
-   Type   : Instrument Serif (titres) · Inter (texte) · Martian Mono (labels)
-   Police du logo à venir : remplacer --font-display une fois reçue.
+   Direction : fond clair, texte gris ardoise, vert pâle en accent.
+   Toute la palette et les polices descendent des variables ci-dessous ;
+   aucune couleur n'est écrite en dur ailleurs dans le fichier.
+
+   NOTE SUR LES CONTRASTES — trois arbitrages imposés par le niveau AA :
+   · Le vert pâle ne peut pas servir de couleur de texte sur fond clair
+     (1,32:1). Il sert de REMPLISSAGE : boutons, pastilles, surlignage.
+     Sur fond ardoise il devient lisible (7,57:1) et porte alors les titres.
+   · Le gris clair ne peut pas servir de texte (1,66:1). Il reste réservé
+     aux bordures et aux séparateurs, comme prévu.
+   · Deux teintes dérivées comblent les manques : --accent-ink pour du vert
+     lisible sur fond clair, --text-mute pour du texte secondaire.
    ========================================================================== */
 
 :root {
-  /* Palette — base noir / gris / blanc, accents verts.
-     Toutes les couleurs du site descendent de ces variables : changer une
-     teinte ici la propage partout, aucune valeur n'est écrite en dur ailleurs.
-     Les rapports de contraste indiqués sont mesurés sur --ink et vérifiés
-     conformes WCAG AA (4.5:1 minimum pour du texte normal). */
-  --ink:        #0a0c0b;   /* noir de fond, très légèrement vert */
-  --ink-raised: #141917;   /* surfaces au-dessus du fond */
+  /* Palette imposée */
+  --accent:      #c5e1b8;   /* Vert Pâle    — remplissage : boutons, pastilles */
+  --slate:       #373e4d;   /* Gris Ardoise — texte et fonds sombres */
+  --paper:       #f7f7f7;   /* Blanc Cassé  — fond clair principal */
+  --line:        #bdc3c7;   /* Gris Clair   — bordures, séparateurs */
+  --sand:        #e6dcd2;   /* Clair        — fond clair secondaire */
 
-  --chalk:      #f1f5f2;   /* texte principal      — 17.8:1 */
-  --chalk-dim:  #adb6b0;   /* texte secondaire     —  9.4:1 */
-  --chalk-mute: #8a938c;   /* légendes, sources    —  6.2:1 */
+  /* Teintes dérivées, nécessaires pour tenir le niveau AA */
+  --accent-ink:  #4e6e3e;   /* vert lisible sur fond clair — 5,41:1 */
+  --text-mute:   #646c74;   /* texte secondaire sur fond clair — 4,98:1 */
 
-  --green:      #5fe08d;   /* accents, titres mis en avant, boutons — 11.7:1 */
-  --green-dim:  #3fbe74;   /* accents secondaires  —  8.3:1 */
-  --forest:     #12301d;   /* vert profond : surfaces seulement, jamais du texte */
-  --green-raw:  95, 224, 141;   /* composantes RVB, pour les transparences */
+  /* Rôles : le reste de la feuille n'utilise que ces noms-là. */
+  --ink:         var(--paper);        /* fond de page */
+  --ink-raised:  #ffffff;             /* surfaces au-dessus du fond */
+  --chalk:       var(--slate);        /* texte principal — 10,0:1 */
+  --chalk-dim:   #4d5563;             /* texte secondaire — 7,7:1 */
+  --chalk-mute:  var(--text-mute);    /* légendes, sources — 4,98:1 */
+  --green:       var(--accent-ink);   /* accents en texte */
+  --green-dim:   var(--accent-ink);
+  --green-raw:   197, 225, 184;
+  --forest:      var(--accent);       /* pastilles d'icônes */
 
-  --rule:       rgba(var(--green-raw), .18);
-  --rule-soft:  rgba(var(--green-raw), .09);
-  --glow:       rgba(var(--green-raw), .10);
-  --veil:       rgba(10, 12, 11, .84);
-  --danger:     #ff9b9b;
-  --status:     var(--green);
+  --rule:        var(--line);
+  --rule-soft:   rgba(55, 62, 77, .12);
+  --glow:        rgba(var(--green-raw), .55);
+  --veil:        rgba(247, 247, 247, .86);
+  --danger:      #a4342a;             /* erreur lisible sur fond clair — 6,3:1 */
+  --status:      var(--accent-ink);
+  --shadow:      0 14px 40px rgba(55, 62, 77, .12);
 
-  --font-display: "Instrument Serif", Georgia, "Times New Roman", serif;
-  --font-body:    "Inter", "Helvetica Neue", Arial, sans-serif;
-  --font-mono:    "Martian Mono", "SFMono-Regular", Consolas, monospace;
+  /* Polices */
+  --font-display: "Inter", "Helvetica Neue", Arial, sans-serif;      /* titres */
+  --font-body:    "Open Sans", "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono:    "Inter", "Helvetica Neue", Arial, sans-serif;      /* labels */
+  --font-accent:  "Playfair Display", Georgia, serif;                /* moments choisis */
 
-  --container: 1440px;   /* contenu centré, largeur maximale commune */
+  --container: 1440px;
   --ease: cubic-bezier(.16, 1, .3, 1);
 }
 
@@ -49,8 +64,8 @@ body {
   background: var(--ink);
   color: var(--chalk);
   font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1.65;
+  font-size: 18px;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -59,27 +74,33 @@ body {
 /* ---------- typographie ---------- */
 h1, h2 {
   font-family: var(--font-display);
-  color: var(--green);
-  font-weight: 400;
-  line-height: .96;
-  letter-spacing: -0.015em;
+  color: var(--chalk);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
   margin: 0 0 .34em;
   text-wrap: balance;
 }
-h1 { font-size: clamp(3rem, 7.2vw, 6.4rem); }
-h2 { font-size: clamp(2.2rem, 4.6vw, 3.8rem); }
+h1 { font-size: clamp(2.2rem, 4.6vw, 3rem); }
+h2 { font-size: clamp(1.75rem, 3.2vw, 2.4rem); }
 
 h3 {
-  font-family: var(--font-body);
-  font-size: 1.02rem;
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+  font-weight: 600;
+  color: var(--chalk);
   letter-spacing: -0.005em;
   margin: 0 0 .5em;
 }
 
 h1 em, h2 em {
-  font-style: italic;
-  color: var(--green-dim);
+  font-style: normal;
+  color: var(--chalk);
+  background: var(--accent);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: .06em .22em;
+  border-radius: 4px;
 }
 
 p { margin: 0 0 1em; color: var(--chalk-dim); }
@@ -94,19 +115,21 @@ a { color: inherit; text-decoration: none; }
 
 /* Label mono : la signature typographique du site */
 .eyebrow {
-  font-family: var(--font-mono);
-  font-size: .64rem;
-  font-weight: 400;
-  letter-spacing: .22em;
+  font-family: var(--font-display);
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .16em;
   text-transform: uppercase;
   color: var(--green-dim);
   margin: 0 0 26px;
 }
 
 .brand {
-  font-family: var(--font-display);
+  font-family: var(--font-accent);
+  font-weight: 500;
   font-size: 1.6rem;
   letter-spacing: -0.02em;
+  color: var(--chalk);
   line-height: 1;
 }
 
@@ -116,12 +139,11 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   justify-content: center;
   padding: 15px 30px;
-  font-family: var(--font-mono);
-  font-size: .68rem;
-  font-weight: 400;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  border: 1px solid var(--chalk);
+  font-family: var(--font-display);
+  font-size: .95rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  border: 1px solid var(--slate);
   border-radius: 999px;
   cursor: pointer;
   position: relative;
@@ -140,13 +162,13 @@ a { color: inherit; text-decoration: none; }
 }
 .btn:hover::before { transform: scaleY(1); }
 
-.btn-solid { background: var(--green); border-color: var(--green); color: var(--ink); }
-.btn-solid::before { background: var(--ink); }
-.btn-solid:hover { color: var(--chalk); }
+.btn-solid { background: var(--accent); border-color: var(--accent); color: var(--slate); }
+.btn-solid::before { background: var(--slate); }
+.btn-solid:hover { color: var(--paper); }
 
 .btn-ghost { background: transparent; color: var(--chalk); }
-.btn-ghost::before { background: var(--green); }
-.btn-ghost:hover { color: var(--ink); }
+.btn-ghost::before { background: var(--accent); }
+.btn-ghost:hover { color: var(--slate); }
 
 .btn-line {
   border: none;
@@ -188,20 +210,20 @@ a { color: inherit; text-decoration: none; }
   backdrop-filter: blur(16px) saturate(140%);
   border: 1px solid var(--rule);
   border-radius: 999px;
-  box-shadow: 0 14px 44px rgba(0, 0, 0, .5);
+  box-shadow: var(--shadow);
 }
 .nav { display: flex; gap: 26px; }
 .nav a {
-  font-family: var(--font-mono);
-  font-size: .64rem;
-  letter-spacing: .12em;
-  text-transform: uppercase;
+  font-family: var(--font-display);
+  font-size: .9rem;
+  font-weight: 500;
+  letter-spacing: 0;
   color: var(--chalk-dim);
   transition: color .3s ease;
   white-space: nowrap;
 }
 .nav a:hover { color: var(--green); }
-.nav-cta { padding: 11px 22px; font-size: .62rem; white-space: nowrap; }
+.nav-cta { padding: 11px 22px; font-size: .88rem; white-space: nowrap; }
 
 .burger {
   display: none;
@@ -335,14 +357,15 @@ a { color: inherit; text-decoration: none; }
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 18px 10px 14px;
+  padding: 11px 18px 11px 14px;
   border: 1px solid var(--rule);
   border-radius: 999px;
   background: var(--ink-raised);
-  font-family: var(--font-mono);
-  font-size: .6rem;
-  letter-spacing: .09em;
-  text-transform: uppercase;
+  font-family: var(--font-display);
+  font-size: .82rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
   color: var(--chalk-dim);
   text-align: left;
 }
@@ -351,7 +374,7 @@ a { color: inherit; text-decoration: none; }
   height: 15px;
   flex: none;
   fill: none;
-  stroke: var(--green);
+  stroke: var(--accent-ink);
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -387,14 +410,14 @@ a { color: inherit; text-decoration: none; }
   height: 44px;
   margin-bottom: 22px;
   border-radius: 12px;
-  background: var(--forest);
-  border: 1px solid var(--rule);
+  background: var(--accent);
+  border: none;
 }
 .node-icon svg {
   width: 21px;
   height: 21px;
   fill: none;
-  stroke: var(--green);
+  stroke: var(--slate);
   stroke-width: 1.7;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -406,6 +429,17 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 640px)  { .node-grid { grid-template-columns: 1fr; } .node { padding: 32px 26px 34px; } }
 
 /* Appel à l'action en fin de section */
+/* Playfair Display, réservé aux moments d'accent : une phrase d'ouverture
+   de section, jamais du texte courant. */
+.lead-accent {
+  font-family: var(--font-accent);
+  font-weight: 500;
+  font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+  line-height: 1.4;
+  color: var(--chalk);
+  margin: 0 0 .7em;
+}
+
 .section-cta { margin-top: 56px; display: flex; justify-content: center; }
 
 /* Jalon de temps sous chaque étape du déroulé */
@@ -424,93 +458,83 @@ a { color: inherit; text-decoration: none; }
 .section-pad { padding: 130px 0; border-top: 1px solid var(--rule-soft); }
 .section-head { margin-bottom: 72px; }
 
-/* ---------- pourquoi Alexo ---------- */
+/* ---------- approche : cartes détachées ---------- */
 .value-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  border-top: 1px solid var(--rule-soft);
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
 }
 .value-card {
+  background: var(--ink-raised);
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  padding: 34px 28px 36px;
   position: relative;
-  padding: 44px 44px 44px 0;
-  border-bottom: 1px solid var(--rule-soft);
-  transition: padding-left .55s var(--ease);
+  overflow: hidden;
+  /* Le survol soulève la carte, éclaircit sa bordure et fait courir un liseré
+     vert en haut : trois signaux discrets plutôt qu'un effet appuyé. */
+  transition: transform .35s var(--ease), box-shadow .35s ease, border-color .35s ease;
 }
-.value-card:nth-child(odd) { border-right: 1px solid var(--rule-soft); }
-.value-card:nth-child(even) { padding-left: 44px; }
-/* Un filet lumineux se dessine en haut de la carte survolée */
-.value-card::after {
+.value-card::before {
   content: "";
   position: absolute;
-  top: -1px;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: var(--chalk);
+  inset: 0 0 auto;
+  height: 3px;
+  background: var(--accent);
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform .7s var(--ease);
+  transition: transform .4s var(--ease);
 }
-.value-card:hover::after { transform: scaleX(1); }
-.value-card:hover h3 { color: var(--chalk); }
-.value-card h3 { color: var(--chalk); margin-bottom: 12px; }
-.value-card p { margin: 0; font-size: .95rem; }
-
-@media (max-width: 760px) {
-  .value-grid { grid-template-columns: 1fr; }
-  .value-card,
-  .value-card:nth-child(even) { padding: 36px 0; border-right: none; }
+.value-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow);
+  border-color: var(--accent-ink);
 }
+.value-card:hover::before { transform: scaleX(1); }
+.value-card h3 { margin-bottom: .5em; }
+.value-card p { margin: 0; font-size: .98rem; }
 
+@media (max-width: 1100px) { .value-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 620px)  { .value-grid { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) {
+  .value-card, .value-card::before { transition: none; }
+  .value-card:hover { transform: none; }
+}
 
 /* ---------- qui je suis ---------- */
+/* Portrait rond et compact, texte dessous : une colonne centrée au lieu de
+   l'ancienne mise en page à deux colonnes. */
 .about-grid {
-  display: grid;
-  grid-template-columns: .42fr .58fr;
-  gap: 72px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  text-align: center;
+  gap: 24px;
+  max-width: 60ch;
+  margin: 0 auto;
 }
-.about-portrait { display: flex; flex-direction: column; gap: 18px; }
-/* Cadre du portrait. Le rapport 4/5 est imposé par le cadre, pas par le
-   fichier : une photo de n'importe quel format sera recadrée proprement par
-   object-fit sans être déformée. object-position vise légèrement au-dessus du
-   centre, là où se trouve un visage sur un portrait. */
+.about-portrait { display: flex; flex-direction: column; align-items: center; gap: 14px; }
 .portrait-frame {
-  aspect-ratio: 4 / 5;
-  width: 100%;
-  max-width: 420px;
-  border: 1px solid var(--rule);
-  background: var(--ink-raised);
+  width: 148px;
+  height: 148px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--accent);
+  background: var(--sand);
   display: grid;
   place-items: center;
-  overflow: hidden;
 }
-.portrait-frame img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;   /* le fichier est déjà recadré en 4/5 */
-  display: block;
-}
-.portrait-initial {
-  font-family: var(--font-display);
-  font-size: clamp(4rem, 8vw, 7rem);
-  line-height: 1;
-  color: var(--rule);
-}
+.portrait-frame img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 26%; display: block; }
+.portrait-initial { font-family: var(--font-accent); font-size: 3.4rem; color: var(--chalk-mute); }
 .portrait-cap {
   margin: 0;
-  font-family: var(--font-mono);
-  font-size: .58rem;
-  letter-spacing: .14em;
-  text-transform: uppercase;
+  font-family: var(--font-display);
+  font-size: .84rem;
+  font-weight: 600;
   color: var(--chalk-mute);
 }
-
-@media (max-width: 900px) {
-  .about-grid { grid-template-columns: 1fr; gap: 44px; }
-  .portrait-frame { max-width: 260px; }
-}
+.about p { margin: 0 0 .9em; }
+.about p:last-child { margin-bottom: 0; }
 
 /* ---------- galerie de réalisations ---------- */
 /* Carrousel 3D : les cartes pivotent selon leur distance au centre du rail */
@@ -669,46 +693,87 @@ a { color: inherit; text-decoration: none; }
   .stat, .stat + .stat { padding: 32px 0; border-left: none; }
 }
 
-/* ---------- déroulé ---------- */
-.steps { list-style: none; margin: 0; padding: 0; }
-.steps li {
+/* ---------- déroulé : frise verticale en zigzag ---------- */
+/* Une ligne centrale, les étapes alternées de part et d'autre, et une pastille
+   numérotée posée sur la ligne. Chaque étape apparaît à son tour au
+   défilement plutôt que d'être visible d'emblée. */
+.timeline {
   position: relative;
-  display: grid;
-  grid-template-columns: 90px 1fr;
-  gap: 32px;
-  padding: 38px 0;
-  border-top: 1px solid var(--rule-soft);
-  transition: padding-left .55s var(--ease);
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 1000px;
 }
-.steps li:last-child { border-bottom: 1px solid var(--rule-soft); }
-.steps li::after {
+/* La ligne qui relie les étapes */
+.timeline::before {
   content: "";
   position: absolute;
-  top: -1px;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: var(--chalk);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform .7s var(--ease);
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--rule);
 }
-.steps li:hover::after { transform: scaleX(1); }
-.steps li:hover { padding-left: 20px; }
-.step-num {
-  font-family: var(--font-mono);
-  font-size: .66rem;
-  letter-spacing: .16em;
-  color: var(--chalk-mute);
-  padding-top: 4px;
-  transition: color .4s ease;
-}
-.steps li:hover .step-num { color: var(--chalk); }
-.steps h3 { margin-bottom: 8px; }
-.steps p { margin: 0; }
 
-@media (max-width: 640px) {
-  .steps li { grid-template-columns: 1fr; gap: 12px; }
+.tl-step {
+  position: relative;
+  width: 50%;
+  padding: 0 56px 56px 0;
+  text-align: right;
+}
+.tl-step:nth-child(even) {
+  margin-left: 50%;
+  padding: 0 0 56px 56px;
+  text-align: left;
+}
+.tl-step:last-child { padding-bottom: 0; }
+
+/* Pastille numérotée, centrée sur la ligne */
+.tl-num {
+  position: absolute;
+  top: 0;
+  right: -25px;
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--slate);
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  box-shadow: 0 0 0 6px var(--ink);
+}
+.tl-step:nth-child(even) .tl-num { right: auto; left: -25px; }
+
+.tl-step h3 { margin: 6px 0 .4em; }
+.tl-step p { margin: 0; font-size: .98rem; }
+
+/* Apparition progressive : chaque étape glisse depuis son côté. */
+.tl-step {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity .7s var(--ease), transform .7s var(--ease);
+}
+.tl-step.in-view { opacity: 1; transform: none; }
+
+@media (max-width: 760px) {
+  .timeline::before { left: 25px; }
+  .tl-step,
+  .tl-step:nth-child(even) {
+    width: 100%;
+    margin-left: 0;
+    padding: 0 0 44px 68px;
+    text-align: left;
+  }
+  .tl-num,
+  .tl-step:nth-child(even) .tl-num { left: 0; right: auto; width: 44px; height: 44px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tl-step { opacity: 1; transform: none; transition: none; }
 }
 
 /* ---------- citation du fondateur ---------- */
