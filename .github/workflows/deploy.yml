@@ -49,6 +49,7 @@ jobs:
             --exclude='brand' \
             --exclude='README.md' \
             --exclude='ERRORS_LOG.md' \
+            --exclude='ETAT-DU-PROJET.md' \
             --exclude='.gitignore' \
             --exclude='_publish' \
             ./ _publish/
