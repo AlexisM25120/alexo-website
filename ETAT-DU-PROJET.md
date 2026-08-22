@@ -1,7 +1,7 @@
 # État du projet — reprise de session
 
 Document de passation. À lire en premier lors d'une nouvelle session de
-travail sur ce site. Dernière mise à jour : 12 août 2026, commit `ea15f57`.
+travail sur ce site. Dernière mise à jour : 22 août 2026.
 
 ---
 
@@ -78,8 +78,15 @@ gris ardoise `#373E4D`, blanc cassé `#F7F7F7`, gris clair `#BDC3C7`, clair
 `#E6DCD2`. Typographie Inter (titres), Open Sans (corps, 18 px), Playfair
 Display (accents). Tout est centralisé dans `:root`, aucune couleur en dur.
 
-**Tarifs actuels** — Site Vitrine 1497 €, Forfait Recommandé 2997 € (mis en
-avant), Site Premium 3997 €. Acompte de 500 € sur les trois.
+**Tarifs actuels** — Site Vitrine 1497 € (une page), Forfait Recommandé
+2997 € (4 à 6 pages, mis en avant), Site Premium 3997 € (6 à 10 pages).
+Acompte de 500 € sur les trois. Les CGV décrivent exactement ces trois
+formules depuis le 22 août : prix fermes, volumes de pages bornés, et une
+clause de devis complémentaire pour tout ce qui sort du périmètre.
+
+**Mentions légales** — complètes. ALEXO, entrepreneur individuel
+(micro-entreprise), Alexis Moine, 4 rue Paul Decrind, 25120 Maiche,
+SIRET 108 885 658 00014, code APE 62.01Z, TVA non applicable (art. 293 B).
 
 **Formulaire** — fonctionnel et vérifié de bout en bout le 12 août. Passe par
 FormSubmit ; l'adresse a été confirmée. Un mode diagnostic est disponible en
@@ -90,42 +97,41 @@ ouvrant la page avec `?debug=1` : le motif exact d'un refus s'affiche alors
 
 ## Ce qui reste à faire
 
-### Bloquant pour le lancement
+### Fait le 22 août — ne pas refaire
 
-1. **Le SIRET.** L'entreprise n'est pas encore immatriculée. Sept champs
-   `[À COMPLÉTER]` attendent dans `cgv.html` (2) et `mentions-legales.html`
-   (5) : nom, adresse, SIRET. Ces mentions sont **obligatoires** (art. 6 III
-   de la LCEN) dès que le site est publiquement référencé.
+Les trois points autrefois bloquants sont levés. Résumé, pour éviter qu'une
+session suivante ne les rouvre :
 
-2. **Retirer le `noindex`.** Le site est volontairement tenu hors de Google
-   tant que les mentions légales sont incomplètes. Une balise
-   `<meta name="robots" content="noindex">` marquée `PRÉ-LANCEMENT` est
-   posée dans `index.html`, `cgv.html` et `mentions-legales.html`.
-   Ne pas y toucher dans `404.html` ni dans `demos/` : le `noindex` y est
-   permanent et voulu. Ne rien changer dans `robots.txt` — voir `ERRORS_LOG.md`
-   pour la raison.
+- **Le SIRET est obtenu** et l'identité légale est renseignée partout. Plus
+  aucun `[À COMPLÉTER]` dans les fichiers HTML.
+- **Le `noindex` de pré-lancement est retiré** de `index.html`, `cgv.html` et
+  `mentions-legales.html`. Ceux de `404.html` et de `demos/` restent en
+  place : ils sont permanents et voulus. `robots.txt` n'a pas changé de
+  directive — voir `ERRORS_LOG.md` pour la raison.
+- **Les CGV sont alignées** sur les trois forfaits de la page d'accueil, et
+  la FAQ ainsi que les deux méta-descriptions d'`index.html`, qui citaient
+  encore 1997 € et la gestion publicitaire, sont corrigées.
 
-3. **Google Search Console**, une fois le site indexable.
+### Reste à faire
 
-### Incohérences connues, en attente d'arbitrage
+1. **Google Search Console** : inscrire le site et soumettre `sitemap.xml`.
+   Le site est indexable, mais rien n'a encore été déclaré à Google.
 
-4. **Les CGV citent encore les anciens tarifs** : 1997 €, à partir de
-   2997 €, et 997 €/mois pour une formule « Gestion Publicitaire » qui
-   n'existe plus sur la page d'accueil. Elles décrivent aussi un site de
-   4 pages pour la formule d'entrée, désormais vendue comme page unique.
-   **C'est le point le plus urgent après le SIRET** : un contrat qui
-   contredit la page de vente est un risque réel.
-
-5. **« Nous » contre « je ».** Le titre du hero dit « Nous créons », le reste
+2. **« Nous » contre « je ».** Le titre du hero dit « Nous créons », le reste
    du site dit « je » et vend l'argument « un interlocuteur, pas une agence ».
    L'écart se remarque.
 
+3. Deux finitions rédactionnelles laissées ouvertes dans les CGV : la clause
+   de périmètre de 3.2 énumère des exemples (e-commerce, multilingue) que
+   celle de 3.3 ne reprend pas, et la première puce de 3.3 redit ce que sa
+   clause de périmètre énonce déjà.
+
 ### Confort, sans urgence
 
-6. Police définitive du logo (la marque est en Playfair par défaut).
-7. Aucune image de partage (`og:image`) : les liens envoyés sur WhatsApp ou
+4. Police définitive du logo (la marque est en Playfair par défaut).
+5. Aucune image de partage (`og:image`) : les liens envoyés sur WhatsApp ou
    LinkedIn n'affichent aucun aperçu, alors que le code en promet un.
-8. Les polices Google transmettent l'adresse IP des visiteurs à Google, ce
+6. Les polices Google transmettent l'adresse IP des visiteurs à Google, ce
    qui pose un point RGPD sur un site qui a une page confidentialité. Les
    héberger localement règle aussi la performance.
 

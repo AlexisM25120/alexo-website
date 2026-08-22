@@ -115,24 +115,22 @@ Dans cet ordre — les étapes 2 et 3 dépendent l'une de l'autre.
 3. **Forcer HTTPS** — seulement une fois le SSL actif : dans `.htaccess`, décommente le bloc de redirection en haut du fichier (retire les `#` des 6 lignes). Le domaine y est déjà renseigné. **Décommenter avant que le SSL soit actif provoque une boucle de redirection et rend le site inaccessible.**
 4. **Formulaire de maquette** — envoie une première demande depuis le site en ligne : FormSubmit envoie un e-mail de confirmation à `alexo.webdesign@gmail.com`. **Tant que tu n'as pas cliqué sur ce lien, aucun lead ne t'arrivera.**
 
-## Pré-lancement : le site est hors de Google
+## Référencement : le pré-lancement est levé
 
-Tant que l'entreprise n'est pas immatriculée, les mentions légales et les CGV sont incomplètes — le site ne doit donc pas être référencé. Chaque page porte une balise `noindex` : le site est **accessible à qui a l'adresse, absent des résultats Google**.
+Le site est **indexable depuis le 22 août 2026**. L'entreprise étant immatriculée, les mentions légales et les CGV sont complètes, et les balises `noindex` ont été retirées de `index.html`, `cgv.html` et `mentions-legales.html`.
 
-`robots.txt` reste volontairement en `Allow: /`. Un `Disallow: /` bloquerait le crawl, donc la lecture du `noindex`, et l'URL pourrait ressortir malgré tout dans les résultats. Pour être sûr d'être hors index, il faut laisser le robot entrer et lui montrer le `noindex`.
+`404.html` et les pages de `demos/` conservent leur `noindex` : il y est **permanent et voulu**. Ne pas le retirer.
 
-### Lever le pré-lancement (une fois le SIRET reçu)
+`robots.txt` reste en `Allow: /`, comme il l'a toujours été — rien n'a changé de ce côté. La raison d'origine tient toujours : un `Disallow: /` bloquerait le crawl, donc la lecture des `noindex` restants, et ces URL pourraient ressortir dans les résultats malgré tout.
 
-1. Compléter les champs `[À COMPLÉTER]` dans `mentions-legales.html` et `cgv.html` : nom, adresse, SIRET. **Obligatoire** (art. 6 III de la LCEN) dès que le site est référencé.
-2. Retirer la balise `<meta name="robots" content="noindex" />` et son commentaire `PRÉ-LANCEMENT` dans `index.html`, `cgv.html` et `mentions-legales.html`. Ne pas y toucher dans `404.html` ni dans `demos/` : le `noindex` y est permanent et voulu.
-3. Ne rien changer dans `robots.txt`.
-4. Déployer, puis inscrire le site sur [Google Search Console](https://search.google.com/search-console) et soumettre `sitemap.xml`.
+Ce qui reste à faire : inscrire le site sur [Google Search Console](https://search.google.com/search-console) et y soumettre `sitemap.xml`.
 
-Pour vérifier ce qui reste :
+Pour vérifier qu'aucun reliquat ne subsiste :
 
 ```bash
-grep -rn "À COMPLÉTER" *.html
-grep -rn "PRÉ-LANCEMENT" *.html
+grep -rn "À COMPLÉTER" *.html        # doit ne rien renvoyer
+grep -rn "PRÉ-LANCEMENT" *.html      # doit ne rien renvoyer
+grep -rln "noindex" --include=*.html .   # 404.html et les 3 demos/, rien d'autre
 ```
 
 ## Important — le numéro de version des fichiers

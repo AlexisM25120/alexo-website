@@ -51,10 +51,13 @@ Deux options :
 
 Domaine : **alexowebdesign.com** — déjà renseigné dans `.htaccess`, `robots.txt`, `sitemap.xml` et les balises `canonical` / `og:` de `index.html`.
 
-Le site est en **pré-lancement** : chaque page porte une balise `noindex`, il est donc visible par qui a l'adresse mais absent de Google. C'est volontaire tant que les mentions légales sont incomplètes.
+Le pré-lancement est **levé** depuis le 22 août 2026 : l'entreprise est immatriculée, les mentions légales sont complètes et les balises `noindex` ont été retirées des pages publiques. Le site est indexable.
 
-- [ ] Champs `[À COMPLÉTER]` dans `mentions-legales.html` et `cgv.html` (nom, adresse, SIRET) une fois l'entreprise immatriculée
-- [ ] Retirer les balises `noindex` (`index.html`, `cgv.html`, `mentions-legales.html`) — **seulement après** le point ci-dessus
+`404.html` et les pages de `demos/` gardent leur `noindex` : il y est permanent et voulu.
+
+- [x] Champs `[À COMPLÉTER]` dans `mentions-legales.html` et `cgv.html` (nom, adresse, SIRET)
+- [x] Retirer les balises `noindex` (`index.html`, `cgv.html`, `mentions-legales.html`)
+- [ ] Inscrire le site sur Google Search Console et y soumettre `sitemap.xml`
 - [ ] Activer la redirection HTTPS dans `.htaccess` une fois le certificat SSL actif
 - [ ] Confirmer FormSubmit au premier envoi réel du formulaire de maquette
 - [ ] Photo dans la section « Qui je suis » (`index.html`, bloc `.portrait-frame`)

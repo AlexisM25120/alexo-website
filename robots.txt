@@ -1,14 +1,13 @@
-# PRÉ-LANCEMENT
-# Le site est volontairement tenu hors de Google via la balise
-# <meta name="robots" content="noindex"> présente dans chaque page.
+# Le pré-lancement est levé depuis le 22 août 2026 : les pages publiques
+# n'ont plus de balise noindex et sont indexables.
+#
+# 404.html et les pages de demos/ gardent la leur, de façon permanente.
 #
 # On garde "Allow: /" exprès : un "Disallow: /" empêcherait Google de
-# CRAWLER les pages, donc de LIRE la balise noindex — et l'URL pourrait
-# malgré tout apparaître dans les résultats. Pour être sûr d'être hors
-# index, il faut laisser le robot entrer et lui montrer le noindex.
-#
-# À la levée du pré-lancement : retirer les balises noindex des pages
-# (index.html, cgv.html, mentions-legales.html) et ne rien changer ici.
+# CRAWLER ces pages, donc de LIRE leur balise noindex — et leur URL
+# pourrait malgré tout apparaître dans les résultats. Pour être sûr
+# qu'elles restent hors index, il faut laisser le robot entrer et lui
+# montrer le noindex. Ne pas mettre de Disallow ici.
 
 User-agent: *
 Allow: /
