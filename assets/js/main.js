@@ -261,9 +261,9 @@ if (cookieBar) {
   const CONSENT_KEY = 'cookie_consent';
 
   // GA_MEASUREMENT_ID à insérer ici — format « G-XXXXXXXXXX ».
-  // Tant que cette chaîne est vide, le bandeau fonctionne normalement
-  // mais aucun script n'est chargé, même après un « Accepter ».
-  const GA_MEASUREMENT_ID = '';
+  // Une chaîne vide neutralise la mesure : le bandeau fonctionne
+  // normalement, mais aucun script n'est chargé même après un « Accepter ».
+  const GA_MEASUREMENT_ID = 'G-TW2890GNE2';
 
   // localStorage lève une exception en navigation privée sur certains
   // navigateurs, et quand les données de site sont bloquées. Dans ce cas
@@ -292,10 +292,28 @@ if (cookieBar) {
     window.gtag('config', GA_MEASUREMENT_ID, { anonymize_ip: true });
   };
 
+  // Retrait du consentement. Un script déjà injecté ne peut pas être
+  // « désinjecté » : gtag.js prévoit pour cela un drapeau global que la
+  // bibliothèque teste avant chaque envoi. On supprime en plus les cookies
+  // déjà posés (_ga et _ga_<conteneur>), sans quoi le refus ne serait
+  // effectif qu'au prochain chargement de page.
+  const revokeAnalytics = () => {
+    window['ga-disable-' + GA_MEASUREMENT_ID] = true;
+    document.cookie.split(';').forEach((entry) => {
+      const name = entry.split('=')[0].trim();
+      if (!/^_ga/.test(name)) return;
+      const expire = '=; Max-Age=0; path=/';
+      document.cookie = name + expire;
+      document.cookie = name + expire + '; domain=' + location.hostname;
+      document.cookie = name + expire + '; domain=.' + location.hostname;
+    });
+  };
+
   const decide = (value) => {
     writeConsent(value);
     cookieBar.hidden = true;
     if (value === 'accepted') loadAnalytics();
+    else revokeAnalytics();
   };
 
   const consent = readConsent();
@@ -309,4 +327,19 @@ if (cookieBar) {
   const cookieRefuse = document.getElementById('cookieRefuse');
   if (cookieAccept) cookieAccept.addEventListener('click', () => decide('accepted'));
   if (cookieRefuse) cookieRefuse.addEventListener('click', () => decide('refused'));
+
+  // « Gérer les cookies » — le RGPD demande que retirer son consentement
+  // soit aussi simple que le donner. Le bandeau est simplement réaffiché,
+  // et le prochain clic écrase le choix enregistré.
+  const reopenBar = () => { cookieBar.hidden = false; };
+
+  const cookieManage = document.getElementById('cookieManage');
+  if (cookieManage) cookieManage.addEventListener('click', reopenBar);
+
+  // Les autres pages n'ont pas le bandeau : leur lien de pied de page
+  // renvoie ici avec ce fragment, qui rouvre le choix à l'arrivée.
+  if (location.hash === '#gerer-cookies') reopenBar();
+  window.addEventListener('hashchange', () => {
+    if (location.hash === '#gerer-cookies') reopenBar();
+  });
 }
