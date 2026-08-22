@@ -1238,3 +1238,60 @@ input:focus-visible, textarea:focus-visible { outline-offset: 1px; }
   .cursor { display: none; }
   .magnetic { transform: none; }
 }
+
+/* ------------------------------------------------------------------
+   Bandeau de consentement cookies
+   Posé en bas de fenêtre, au-dessus du contenu mais sous le menu
+   mobile (z-index 200) pour ne jamais le recouvrir.
+------------------------------------------------------------------ */
+.cookie-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 150;
+  background: var(--ink-raised);
+  border-top: 1px solid var(--rule);
+  box-shadow: var(--shadow);
+}
+.cookie-bar[hidden] { display: none; }
+
+.cookie-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px 28px;
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+.cookie-text {
+  margin: 0;
+  flex: 1 1 320px;
+  color: var(--chalk);          /* 10,0:1 sur fond blanc */
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.cookie-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Les boutons du bandeau reprennent .btn, en plus compact : la hauteur
+   de 17px de padding mangerait trop de place sur un mobile. */
+.cookie-btn {
+  padding: 12px 26px;
+  font-size: .95rem;
+}
+
+@media (max-width: 640px) {
+  .cookie-inner { flex-direction: column; align-items: stretch; }
+  /* En colonne, la base de 320px ci-dessus s'appliquerait à la HAUTEUR et
+     étirerait le bandeau sur la moitié de l'écran. */
+  .cookie-text { flex: 0 1 auto; }
+  .cookie-actions { justify-content: stretch; }
+  .cookie-btn { flex: 1 1 auto; }
+}

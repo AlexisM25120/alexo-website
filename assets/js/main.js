@@ -244,3 +244,69 @@ if (leadForm && formNote) {
     }
   });
 }
+
+/* ------------------------------------------------------------------
+   Consentement cookies et chargement conditionnel de Google Analytics
+
+   Règle : AUCUN script de mesure n'est chargé tant que le visiteur n'a
+   pas accepté. Ni au premier chargement, ni après un refus. GA n'est
+   injecté qu'à deux moments — au chargement si un « accepted » est déjà
+   enregistré, ou au clic sur « Accepter ».
+
+   Le bandeau n'existe que sur index.html : la garde `if` ci-dessous
+   n'est pas décorative, main.js est chargé par toutes les pages.
+------------------------------------------------------------------ */
+const cookieBar = document.getElementById('cookieConsent');
+if (cookieBar) {
+  const CONSENT_KEY = 'cookie_consent';
+
+  // GA_MEASUREMENT_ID à insérer ici — format « G-XXXXXXXXXX ».
+  // Tant que cette chaîne est vide, le bandeau fonctionne normalement
+  // mais aucun script n'est chargé, même après un « Accepter ».
+  const GA_MEASUREMENT_ID = '';
+
+  // localStorage lève une exception en navigation privée sur certains
+  // navigateurs, et quand les données de site sont bloquées. Dans ce cas
+  // on retombe sur « pas de choix connu » : le bandeau s'affiche, et un
+  // refus reste un refus pour la durée de la visite.
+  const readConsent = () => {
+    try { return localStorage.getItem(CONSENT_KEY); } catch (err) { return null; }
+  };
+  const writeConsent = (value) => {
+    try { localStorage.setItem(CONSENT_KEY, value); } catch (err) { /* sans effet */ }
+  };
+
+  let analyticsLoaded = false;
+  const loadAnalytics = () => {
+    if (analyticsLoaded || !GA_MEASUREMENT_ID) return;
+    analyticsLoaded = true;
+
+    const tag = document.createElement('script');
+    tag.async = true;
+    tag.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_MEASUREMENT_ID;
+    document.head.appendChild(tag);
+
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', GA_MEASUREMENT_ID, { anonymize_ip: true });
+  };
+
+  const decide = (value) => {
+    writeConsent(value);
+    cookieBar.hidden = true;
+    if (value === 'accepted') loadAnalytics();
+  };
+
+  const consent = readConsent();
+  if (consent === 'accepted') {
+    loadAnalytics();
+  } else if (consent !== 'refused') {
+    cookieBar.hidden = false;
+  }
+
+  const cookieAccept = document.getElementById('cookieAccept');
+  const cookieRefuse = document.getElementById('cookieRefuse');
+  if (cookieAccept) cookieAccept.addEventListener('click', () => decide('accepted'));
+  if (cookieRefuse) cookieRefuse.addEventListener('click', () => decide('refused'));
+}

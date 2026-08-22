@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Open+Sans:wght@400;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=12" />
+  <link rel="stylesheet" href="assets/css/style.css?v=13" />
 </head>
 <body>
 
@@ -567,6 +567,24 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=12"></script>
+<!-- Bandeau de consentement cookies (RGPD).
+     Masqué par défaut via `hidden` : c'est main.js qui décide de l'afficher,
+     après avoir lu le choix déjà enregistré. Sans cette garde, le bandeau
+     apparaîtrait une fraction de seconde à chaque visite, y compris pour un
+     visiteur ayant déjà répondu.
+     Le script Google Analytics n'est PAS posé ici : il est injecté par
+     main.js, et uniquement si le consentement a été donné. -->
+<aside class="cookie-bar" id="cookieConsent" role="region"
+       aria-label="Consentement aux cookies de mesure d'audience" hidden>
+  <div class="container cookie-inner">
+    <p class="cookie-text">Ce site utilise des cookies de mesure d'audience (Google Analytics). Vous pouvez accepter ou refuser.</p>
+    <div class="cookie-actions">
+      <button type="button" class="btn btn-solid cookie-btn" id="cookieAccept">Accepter</button>
+      <button type="button" class="btn btn-ghost cookie-btn" id="cookieRefuse">Refuser</button>
+    </div>
+  </div>
+</aside>
+
+<script src="assets/js/main.js?v=13"></script>
 </body>
 </html>
