@@ -85,7 +85,7 @@ formules depuis le 22 août : prix fermes, volumes de pages bornés, et une
 clause de devis complémentaire pour tout ce qui sort du périmètre.
 
 **Mentions légales** — complètes. ALEXO, entrepreneur individuel
-(micro-entreprise), Alexis Moine, 4 rue Paul Decrind, 25120 Maiche,
+(micro-entreprise), Alexis Moine, 4 rue Paul Decrind, 25120 Maîche,
 SIRET 108 885 658 00014, code APE 62.01Z, TVA non applicable (art. 293 B).
 
 **Formulaire** — fonctionnel et vérifié de bout en bout le 12 août. Passe par
