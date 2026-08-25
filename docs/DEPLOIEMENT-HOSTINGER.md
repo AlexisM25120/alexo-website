@@ -97,7 +97,7 @@ Utile si le déploiement Git coince, ou pour une correction urgente.
 
 1. **hPanel** → *Fichiers* → **Gestionnaire de fichiers** → dossier `public_html/`.
 2. Supprime le `default.php` ou `index.html` de démo s'il est présent.
-3. Téléverse **le contenu du dépôt** : `index.html`, `cgv.html`, `mentions-legales.html`, `404.html`, `favicon.svg`, `robots.txt`, `sitemap.xml`, `.htaccess`, et les dossiers `assets/` et `demos/`.
+3. Téléverse **le contenu du dépôt** : `index.html`, `cgv.html`, `mentions-legales.html`, `404.html`, `favicon-v2.svg`, `robots.txt`, `sitemap.xml`, `.htaccess`, et les dossiers `assets/` et `demos/`.
 4. Vérifie que `index.html` est **directement** dans `public_html/`, pas dans un sous-dossier.
 
 `docs/`, `brand/` et `README.md` ne sont pas nécessaires en ligne — inutile de les téléverser.

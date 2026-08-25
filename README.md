@@ -12,7 +12,7 @@ Site du studio web **Alexo**. Site statique (HTML / CSS / JS natif), sans dépen
 ├── mentions-legales.html     mentions légales + RGPD
 ├── cgv.html                  conditions générales de vente
 ├── 404.html                  page d'erreur
-├── favicon.svg
+├── favicon-v2.svg
 ├── robots.txt
 ├── sitemap.xml
 ├── .htaccess                 config Apache : HTTPS, cache, en-têtes de sécurité
