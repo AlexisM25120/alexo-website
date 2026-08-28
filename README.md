@@ -22,10 +22,11 @@ Site du studio web **Alexo**. Site statique (HTML / CSS / JS natif), sans dépen
 │   ├── js/main.js            animations, carrousel 3D, formulaire
 │   └── img/                  captures des sites de démonstration
 │
-├── demos/                    trois sites de démonstration complets
+├── demos/                    quatre sites de démonstration complets
 │   ├── osteopathe/           Cabinet Rivière
 │   ├── dentaire/             Cabinet Solène
-│   └── artisan/              Atelier Bois & Fer
+│   ├── artisan/              Atelier Bois & Fer
+│   └── coach-sportif/        Hornet Coaching
 │
 ├── brand/                    éléments de marque (hors ligne éditoriale du site)
 └── docs/
