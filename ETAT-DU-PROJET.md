@@ -1,15 +1,15 @@
 # État du projet — reprise de session
 
 Document de passation. À lire en premier lors d'une nouvelle session de
-travail sur ce site. Dernière mise à jour : 22 août 2026.
+travail sur ce site. Dernière mise à jour : 31 août 2026.
 
 ---
 
 ## Le projet en une phrase
 
-**Alexo** est le site vitrine d'un studio web indépendant basé à Besançon
-(Doubs), tenu par Alexis. Il vend des sites internet à des indépendants et
-petites entreprises de la région.
+**Alexo** est le site vitrine d'un studio web indépendant basé à Maîche
+(Haut-Doubs), tenu par Alexis. Il vend des sites internet à des indépendants
+et petites entreprises de la région.
 
 - **Dépôt** : `github.com/AlexisM25120/alexo-website`, branche `main`
 - **Domaine** : `alexowebdesign.com`, hébergé chez Hostinger (Premium)
@@ -44,7 +44,7 @@ ERRORS_LOG.md           journal des bugs, causes racines, règles préventives
 
 ### 1. Incrémenter `?v=` à chaque modification du CSS ou du JS
 
-Les pages appellent `style.css?v=12` et `main.js?v=12`. Le fichier
+Les pages appellent `style.css?v=14` et `main.js?v=14`. Le fichier
 `.htaccess` demande de conserver ces fichiers **un an** en cache.
 
 Sans changer ce numéro, une modification reste **invisible en ligne** — pour
@@ -62,6 +62,13 @@ que si l'on clique **Deploy** dans hPanel → *Avancé* → *Git*.
 Un workflow GitHub Actions existe (`.github/workflows/deploy.yml`) mais il
 est **en veille** : les secrets `FTP_HOST`, `FTP_USER` et `FTP_PASSWORD`
 n'ont jamais été renseignés. Pour l'activer, voir la doc de déploiement.
+
+**Concrètement, le site public sert toujours une version antérieure au
+12 août.** Aucune des trois voies de publication ne fonctionne actuellement :
+le déclencheur automatique du workflow est commenté, 6 exécutions sur 6 ont
+échoué (dernière le 12 août, faute de secrets), et rien n'indique qu'un
+webhook Hostinger soit branché. Le bouton *Deploy* de hPanel → *Avancé* →
+*Git* reste la voie manuelle de secours si un dépôt y est déjà configuré.
 
 ---
 
@@ -92,6 +99,19 @@ SIRET 108 885 658 00014, code APE 62.01Z, TVA non applicable (art. 293 B).
 FormSubmit ; l'adresse a été confirmée. Un mode diagnostic est disponible en
 ouvrant la page avec `?debug=1` : le motif exact d'un refus s'affiche alors
 à l'écran.
+
+**RGPD / Analytics** — bandeau de consentement sur `index.html`, choix
+stocké dans `localStorage` sous la clé `cookie_consent` (`accepted` /
+`refused`). GA4 (`G-TW2890GNE2`) n'est chargé qu'après un clic sur
+« Accepter » — jamais avant, jamais après un refus. Un refus ultérieur pose
+le drapeau `ga-disable-<ID>` et supprime les cookies `_ga`. Lien
+« Gérer les cookies » dans le pied de page des quatre pages. Section
+« Cookies et mesure d'audience » complète dans `mentions-legales.html`.
+
+**Icônes** — `favicon-v2.svg` (vectoriel, renommé le 25 août pour forcer les
+navigateurs à reprendre l'icône après déploiement) déclaré en premier sur
+les quatre pages, suivi des PNG de repli dans `assets/img/` (`favicon-32.png`,
+`icon-512.png`, `apple-touch-icon.png`).
 
 ---
 
@@ -129,11 +149,11 @@ session suivante ne les rouvre :
 ### Confort, sans urgence
 
 4. Police définitive du logo (la marque est en Playfair par défaut).
-5. Aucune image de partage (`og:image`) : les liens envoyés sur WhatsApp ou
-   LinkedIn n'affichent aucun aperçu, alors que le code en promet un.
-6. Les polices Google transmettent l'adresse IP des visiteurs à Google, ce
+5. Les polices Google transmettent l'adresse IP des visiteurs à Google, ce
    qui pose un point RGPD sur un site qui a une page confidentialité. Les
    héberger localement règle aussi la performance.
+6. `icon_alexo_hq.png` (1200x1200) est dans le dépôt mais n'est référencé
+   nulle part.
 
 ---
 
