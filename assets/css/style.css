@@ -1173,6 +1173,18 @@ a { color: inherit; text-decoration: none; }
 
 @media (max-width: 640px) { .price-card { padding: 32px 24px; } }
 
+/* Carte tarif unique (sans .price-grid) : laissée libre, elle s'étire sur toute
+   la largeur du conteneur et l'en-tête comme le bouton deviennent des barres
+   de 1200 px. On la ramène à une largeur de lecture, centrée. */
+.price-card-solo { max-width: 760px; margin-inline: auto; }
+
+/* Sous 560 px, le nom et la mention « devis gratuit » se partagent une ligne
+   trop étroite et se cassent chacun sur deux lignes : on empile. */
+@media (max-width: 560px) {
+  .price-card-solo .price-top { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .price-card-solo .price-amount { text-align: left; }
+}
+
 /* ---------- maquette gratuite ---------- */
 .lead-grid {
   display: grid;
