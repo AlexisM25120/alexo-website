@@ -1030,82 +1030,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ---------- tarif ---------- */
-.price-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  align-items: start;
-}
-@media (max-width: 1000px) { .price-grid { grid-template-columns: 1fr; max-width: 560px; } }
-
 .price-card { display: flex; flex-direction: column; }
-
-/* L'offre mise en avant se distingue par la bordure et le fond, pas par une
-   taille différente : les trois cartes restent alignées.
-   Sélecteur doublé volontairement : la règle .price-card générique est
-   déclarée plus bas et repose son `border` en raccourci, ce qui écraserait
-   un simple .price-card-feature à spécificité égale. */
-.price-card.price-card-feature {
-  border-color: var(--green);
-  background: var(--ink-raised);
-}
-
-/* Trois cartes côte à côte : l'en-tête du bloc unique était pensé pour une
-   pleine largeur (nom à gauche, prix à droite). Dans une colonne étroite il
-   faut empiler, sinon le nom et le prix se croisent. */
-.price-grid .price-card { padding: 36px 30px; }
-.price-grid .price-top {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-  padding-bottom: 22px;
-}
-/* .price-amount est aligné à droite dans le bloc large d'origine ; en
-   colonne étroite tout doit repartir de la gauche, sous le nom. */
-.price-grid .price-amount {
-  display: flex;
-  align-items: baseline;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  gap: 4px 10px;
-  text-align: left;
-}
-.price-grid .price-num { font-size: clamp(2.2rem, 3.4vw, 3rem); }
-.price-grid .price-list li { font-size: .92rem; }
-
-/* « À partir de » occupe sa propre ligne au-dessus du montant : le prix reste
-   le premier élément que l'œil accroche, la nuance ne l'écrase pas. */
-.price-from {
-  flex-basis: 100%;
-  font-family: var(--font-mono);
-  font-size: .56rem;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--chalk-mute);
-}
-
-/* Mention d'acompte : identique sur les trois cartes, pour qu'elle se lise
-   comme une règle de la maison et non comme une condition par forfait. */
-.price-deposit {
-  margin: 12px 0 0;
-  font-family: var(--font-mono);
-  font-size: .58rem;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--green-dim);
-}
-.price-flag {
-  align-self: flex-start;
-  margin: 0 0 18px;
-  padding: 5px 13px;
-  border-radius: 999px;
-  background: var(--green);
-  color: var(--ink);
-  font-family: var(--font-mono);
-  font-size: .55rem;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-}
 .price-card .price-cta { margin-top: auto; }
 
 .price-card {
@@ -1130,14 +1055,6 @@ a { color: inherit; text-decoration: none; }
   margin: 0;
 }
 .price-amount { text-align: right; }
-.price-num {
-  display: block;
-  font-family: var(--font-display);
-  font-size: clamp(2.8rem, 5vw, 4rem);
-  line-height: .9;
-  letter-spacing: -0.02em;
-  font-variant-numeric: tabular-nums;
-}
 .price-note {
   font-family: var(--font-mono);
   font-size: .56rem;
