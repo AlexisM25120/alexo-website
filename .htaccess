@@ -41,6 +41,9 @@ ErrorDocument 404 /404.html
   Header set X-Content-Type-Options "nosniff"
   Header set Referrer-Policy "strict-origin-when-cross-origin"
   Header set X-Frame-Options "SAMEORIGIN"
+  # Pas de includeSubDomains (un sous-domaine Hostinger non-HTTPS casserait) ni
+  # de preload (quasi irréversible) — juste forcer HTTPS sur ce domaine.
+  Header always set Strict-Transport-Security "max-age=31536000"
 </IfModule>
 
 # --- Ne pas lister le contenu des dossiers ---------------------------------
