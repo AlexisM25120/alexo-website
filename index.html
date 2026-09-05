@@ -28,7 +28,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://alexowebdesign.com/assets/img/og-image.png" />
 
-  <link rel="stylesheet" href="assets/css/style.css?v=17" />
+  <link rel="stylesheet" href="assets/css/style.css?v=18" />
 </head>
 <body>
 
@@ -513,22 +513,89 @@
 
 </main>
 
-<footer class="site-foot" id="contact">
-  <div class="container foot-row">
-    <div>
-      <a class="brand" href="#top">alexo</a>
-      <p class="foot-tag">Studio de création de sites web — indépendant<br />Maîche, Doubs — Franche-Comté</p>
+<!-- Pied de page cinématique.
+     `.foot-reveal` ne contient rien : c'est un vide de la hauteur d'une
+     fenêtre, qui réserve la course de défilement pendant laquelle le pied
+     — fixé derrière le contenu — se découvre. Il porte l'ancre #contact
+     de la navigation. Ne pas lui donner de fond : il masquerait le pied. -->
+<div class="foot-reveal" id="contact"></div>
+
+<footer class="foot-cinema">
+
+  <div class="foot-aurora" aria-hidden="true"></div>
+  <div class="foot-grid" aria-hidden="true"></div>
+  <div class="foot-giant" aria-hidden="true">alexo</div>
+
+  <!-- Bandeau défilant, purement décoratif : la liste est doublée pour que
+       la boucle de l'animation soit invisible. Masqué aux lecteurs d'écran,
+       son contenu est déjà dit ailleurs dans la page. -->
+  <div class="foot-marquee" aria-hidden="true">
+    <div class="foot-marquee-track">
+      <div class="foot-marquee-group">
+        <span>Sites vitrines sur-mesure</span> <i>✦</i>
+        <span>Référencement local</span> <i>✦</i>
+        <span>Maîche &amp; Haut-Doubs</span> <i>✦</i>
+        <span>Maquette gratuite</span> <i>✦</i>
+        <span>Automatisation</span> <i>✦</i>
+        <span>Studio indépendant</span> <i>✦</i>
+      </div>
+      <div class="foot-marquee-group">
+        <span>Sites vitrines sur-mesure</span> <i>✦</i>
+        <span>Référencement local</span> <i>✦</i>
+        <span>Maîche &amp; Haut-Doubs</span> <i>✦</i>
+        <span>Maquette gratuite</span> <i>✦</i>
+        <span>Automatisation</span> <i>✦</i>
+        <span>Studio indépendant</span> <i>✦</i>
+      </div>
     </div>
-    <div class="foot-contact">
-      <a class="btn btn-solid foot-cta" href="#maquette">Recevez votre maquette gratuite</a>
-      <a href="mailto:alexo.webdesign@gmail.com">alexo.webdesign@gmail.com</a>
+  </div>
+
+  <div class="container foot-main">
+    <h2 class="foot-title">On en <em>parle</em> ?</h2>
+    <p class="foot-lead">Dites-moi ce que vous vendez et à qui. Je réponds sous 3 jours ouvrés, avec une maquette de votre page d'accueil — gratuite et sans engagement.</p>
+
+    <div class="foot-actions">
+      <div class="foot-row-pills">
+        <a class="foot-pill foot-pill-lg magnetic" href="#maquette">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3l2.2 5.3L20 10l-5.8 1.7L12 17l-2.2-5.3L4 10l5.8-1.7L12 3z" />
+          </svg>
+          Recevez votre maquette gratuite
+        </a>
+        <a class="foot-pill foot-pill-lg magnetic" href="mailto:alexo.webdesign@gmail.com">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 6.5h18v11H3v-11zm0 .8l9 6.2 9-6.2" />
+          </svg>
+          alexo.webdesign@gmail.com
+        </a>
+      </div>
+
+      <div class="foot-row-pills">
+        <a class="foot-pill foot-pill-sm magnetic" href="/mentions-legales.html">Mentions légales</a>
+        <a class="foot-pill foot-pill-sm magnetic" href="/cgv.html">CGV</a>
+        <button type="button" class="foot-pill foot-pill-sm magnetic" id="cookieManage">Gérer les cookies</button>
+      </div>
+
       <p class="foot-zone">Maîche (Haut-Doubs) — déplacements dans un rayon de 40 km (Le Russey, Charquemont, Morteau, Pontarlier…), échanges à distance partout ailleurs.</p>
     </div>
   </div>
-  <div class="container foot-bottom">
-    <span>© 2026 Alexo</span>
-    <span><a href="/mentions-legales.html">Mentions légales</a> · <a href="/cgv.html">CGV</a> · <button type="button" class="foot-link" id="cookieManage">Gérer les cookies</button></span>
+
+  <div class="container foot-base">
+    <span>© 2026 Alexo — Studio de création de sites web</span>
+
+    <div class="foot-pill foot-badge">
+      <span>Conçu à la main à</span>
+      <strong>Maîche</strong>
+      <span class="foot-heart" aria-hidden="true">❤</span>
+    </div>
+
+    <button type="button" class="foot-pill foot-top magnetic" id="footTop" aria-label="Remonter en haut de la page">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+      </svg>
+    </button>
   </div>
+
 </footer>
 
 <!-- Bandeau de consentement cookies (RGPD).
@@ -549,6 +616,6 @@
   </div>
 </aside>
 
-<script src="assets/js/main.js?v=17"></script>
+<script src="assets/js/main.js?v=18"></script>
 </body>
 </html>

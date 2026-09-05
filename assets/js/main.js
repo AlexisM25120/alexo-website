@@ -246,6 +246,78 @@ if (leadForm && formNote) {
 }
 
 /* ------------------------------------------------------------------
+   Pied de page cinématique — accueil uniquement
+
+   Deux mécanismes, tous deux purement décoratifs, tous deux coupés si le
+   visiteur a demandé moins de mouvement :
+
+   1. La progression du rideau. `--fp` va de 0 (pied encore entièrement
+      caché derrière le contenu) à 1 (pied plein cadre). Le CSS s'en sert
+      pour faire monter le mot géant, puis le titre, puis les liens. Rien
+      ici ne décide de la visibilité : sans ce script, `var(--fp, 1)` vaut
+      1 dans la feuille de style et le pied s'affiche à son état final.
+
+   2. L'attraction magnétique des pastilles sous le curseur.
+------------------------------------------------------------------ */
+const footReveal = document.querySelector('.foot-reveal');
+const footCinema = document.querySelector('.foot-cinema');
+
+if (footReveal && footCinema && !reducedMotion) {
+  let ticking = false;
+
+  const updateFootProgress = () => {
+    ticking = false;
+    // Part du vide de découverte déjà remontée dans la fenêtre.
+    const top = footReveal.getBoundingClientRect().top;
+    const p = (window.innerHeight - top) / window.innerHeight;
+    footCinema.style.setProperty('--fp', String(Math.min(Math.max(p, 0), 1)));
+  };
+
+  // Le calcul est repoussé à la frame suivante : le gestionnaire de scroll
+  // se contente de poser un drapeau, il ne lit jamais la géométrie lui-même.
+  const queueFootProgress = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(updateFootProgress);
+  };
+
+  window.addEventListener('scroll', queueFootProgress, { passive: true });
+  window.addEventListener('resize', queueFootProgress);
+  updateFootProgress();
+
+  // Pastilles magnétiques. Restreint à la souris : sur écran tactile, un
+  // `pointermove` accompagne le tap et décalerait la cible sous le doigt.
+  footCinema.querySelectorAll('.magnetic').forEach((el) => {
+    el.addEventListener('pointermove', (event) => {
+      if (event.pointerType !== 'mouse') return;
+      const rect = el.getBoundingClientRect();
+      const x = event.clientX - rect.left - rect.width / 2;
+      const y = event.clientY - rect.top - rect.height / 2;
+      el.style.transition = 'transform .2s ease-out';
+      el.style.transform = `translate3d(${x * 0.26}px, ${y * 0.34}px, 0) scale(1.05)`;
+    });
+
+    // Retour en place élastique, plus lent que l'aller : c'est ce contraste
+    // qui donne la sensation d'aimant qu'on relâche.
+    const release = () => {
+      el.style.transition = 'transform 1.1s cubic-bezier(.16, 1, .3, 1)';
+      el.style.transform = '';
+    };
+    el.addEventListener('pointerleave', release);
+    el.addEventListener('blur', release);
+  });
+}
+
+// Remontée en haut de page. Placé hors du bloc ci-dessus : ce bouton doit
+// fonctionner même quand les animations sont désactivées.
+const footTop = document.getElementById('footTop');
+if (footTop) {
+  footTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+  });
+}
+
+/* ------------------------------------------------------------------
    Consentement cookies et chargement conditionnel de Google Analytics
 
    Règle : AUCUN script de mesure n'est chargé tant que le visiteur n'a

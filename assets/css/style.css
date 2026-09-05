@@ -615,8 +615,6 @@ a { color: inherit; text-decoration: none; }
   color: var(--green-dim);
 }
 
-.foot-cta { margin-bottom: 18px; }
-
 /* ---------- structure des sections ---------- */
 .section-pad { padding: 130px 0; border-top: 1px solid var(--rule-soft); }
 .section-head { margin-bottom: 72px; }
@@ -1201,30 +1199,10 @@ textarea { min-height: 110px; resize: vertical; }
   color: var(--chalk-mute);
 }
 
-/* ---------- pied de page ---------- */
+/* ---------- pied de page classique ----------
+   Conservé tel quel : c'est le pied des pages secondaires (mentions
+   légales, CGV, 404). L'accueil utilise le pied cinématique plus bas. */
 .site-foot { border-top: 1px solid var(--rule); padding: 72px 0 32px; }
-.foot-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 32px;
-  flex-wrap: wrap;
-}
-.foot-tag {
-  margin: 14px 0 0;
-  font-family: var(--font-mono);
-  font-size: .6rem;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--chalk-mute);
-}
-.foot-contact a {
-  font-family: var(--font-display);
-  font-size: clamp(1.3rem, 2.6vw, 2rem);
-  border-bottom: 1px solid var(--rule);
-  transition: border-color .35s ease;
-}
-.foot-contact a:hover { border-color: var(--chalk); }
 .foot-bottom {
   display: flex;
   justify-content: space-between;
@@ -1241,6 +1219,343 @@ textarea { min-height: 110px; resize: vertical; }
 }
 .foot-bottom a:hover { color: var(--chalk); }
 
+/* ==========================================================================
+   Pied de page cinématique — accueil uniquement
+
+   PRINCIPE DU RIDEAU : le pied est fixé à la fenêtre et posé DERRIÈRE le
+   contenu. `main` est opaque et au-dessus ; en fin de page il glisse vers
+   le haut et découvre le pied, comme un rideau qu'on lève. `.foot-reveal`
+   est le vide qui réserve la hauteur de défilement nécessaire.
+
+   Deux conditions à ne pas casser : `main` doit rester opaque (sinon le
+   pied transparaît à travers toute la page) et `.foot-reveal` doit rester
+   sans fond (sinon il masque ce qu'il est censé découvrir).
+
+   Le pied passe sur fond ardoise : c'est le seul endroit du site où le
+   vert pâle atteint le niveau AA en texte (7,57:1), il porte donc ici les
+   accents. Toutes les couleurs locales sont dérivées de la palette.
+   ========================================================================== */
+main { position: relative; z-index: 1; background: var(--ink); }
+
+/* Le bord bas du contenu, arrondi et porté par une ombre : sans lui, la
+   découverte ressemble à une coupure nette plutôt qu'à un calque qu'on
+   soulève. Réservé aux pages qui ont le pied cinématique. */
+body:has(.foot-cinema) main {
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  box-shadow: 0 30px 70px rgba(55, 62, 77, .35);
+}
+
+.foot-reveal {
+  position: relative;
+  height: 100svh;
+  min-height: 660px;
+}
+
+.foot-cinema {
+  --f-mute:     #b7bcc6;                  /* texte secondaire sur ardoise — 5,6:1 */
+  --f-line:     rgba(247, 247, 247, .13);
+  --f-glass:    rgba(247, 247, 247, .06);
+  --f-glass-2:  rgba(247, 247, 247, .02);
+  --f-glass-hi: rgba(247, 247, 247, .14);
+
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100svh;
+  min-height: 660px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  background: var(--slate);
+  color: var(--paper);
+}
+
+/* `.container` centre par `margin: 0 auto`. Sur un enfant de conteneur
+   flex, ces marges automatiques l'emportent sur l'étirement : sans cette
+   largeur explicite, la barre du bas se réduirait à son contenu. */
+.foot-cinema .container { width: 100%; }
+
+/* --- décors de fond : halo, grille, mot géant --- */
+.foot-aurora {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80vw;
+  height: 60vh;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 50% 50%,
+              rgba(var(--green-raw), .22) 0%,
+              rgba(var(--green-raw), .07) 42%,
+              transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  animation: foot-breathe 9s ease-in-out infinite alternate;
+}
+
+@keyframes foot-breathe {
+  from { transform: translate(-50%, -50%) scale(1);   opacity: .55; }
+  to   { transform: translate(-50%, -50%) scale(1.12); opacity: 1; }
+}
+
+.foot-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-size: 60px 60px;
+  background-image:
+    linear-gradient(to right,  rgba(247, 247, 247, .045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(247, 247, 247, .045) 1px, transparent 1px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 28%, #000 72%, transparent);
+          mask-image: linear-gradient(to bottom, transparent, #000 28%, #000 72%, transparent);
+}
+
+/* Le mot de marque en filigrane. Il monte et grossit au fil de la
+   découverte : `--fp` est la progression 0 → 1 écrite par main.js. */
+.foot-giant {
+  position: absolute;
+  bottom: -4vh;
+  left: 50%;
+  font-family: var(--font-display);
+  font-size: 26vw;
+  font-weight: 700;
+  line-height: .75;
+  letter-spacing: -.05em;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(247, 247, 247, .07);
+  background: linear-gradient(180deg, rgba(247, 247, 247, .13) 0%, transparent 62%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  opacity: calc(.25 + var(--fp, 1) * .75);
+  transform: translateX(-50%)
+             translateY(calc((1 - var(--fp, 1)) * 9vh))
+             scale(calc(.84 + var(--fp, 1) * .16));
+}
+
+/* --- bandeau défilant en diagonale --- */
+.foot-marquee {
+  position: absolute;
+  top: 11vh;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  padding: 15px 0;
+  border-top: 1px solid var(--f-line);
+  border-bottom: 1px solid var(--f-line);
+  background: rgba(55, 62, 77, .55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transform: rotate(-2deg) scale(1.1);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .25);
+  pointer-events: none;
+}
+.foot-marquee-track {
+  display: flex;
+  width: max-content;
+  font-family: var(--font-mono);
+  font-size: .62rem;
+  font-weight: 600;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--f-mute);
+  animation: foot-marquee 42s linear infinite;
+}
+/* La piste contient deux fois la même liste : à -50% le second exemplaire
+   est exactement là où était le premier, la boucle est invisible. */
+@keyframes foot-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.foot-marquee-group {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+  padding: 0 17px;
+}
+.foot-marquee-group i { font-style: normal; color: var(--accent); }
+
+/* --- pastilles de verre --- */
+.foot-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--f-line);
+  border-radius: 999px;
+  background: linear-gradient(145deg, var(--f-glass) 0%, var(--f-glass-2) 100%);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .22), inset 0 1px 1px var(--f-glass-hi);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: var(--paper);
+  font-family: var(--font-display);
+  text-decoration: none;
+  transition: background .4s var(--ease), border-color .4s var(--ease),
+              box-shadow .4s var(--ease), color .4s var(--ease);
+}
+a.foot-pill:hover, button.foot-pill:hover {
+  background: linear-gradient(145deg, rgba(var(--green-raw), .16) 0%, var(--f-glass-2) 100%);
+  border-color: rgba(var(--green-raw), .45);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, .3), inset 0 1px 1px rgba(247, 247, 247, .22);
+  color: var(--paper);
+}
+
+.foot-pill-lg {
+  padding: 19px 34px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+.foot-pill-lg svg { width: 20px; height: 20px; color: var(--accent); flex: none; }
+
+.foot-pill-sm {
+  padding: 12px 22px;
+  font-size: .78rem;
+  font-weight: 500;
+  color: var(--f-mute);
+  cursor: pointer;
+}
+
+/* --- bloc central --- */
+.foot-main {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 9vh;
+}
+/* Les deux étages du bloc n'entrent pas en même temps : le titre démarre
+   sa course à 20 % de la découverte, les liens à 34 %. */
+.foot-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 7vw, 5.4rem);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  line-height: 1.02;
+  margin: 0 0 14px;
+  background: linear-gradient(180deg, var(--paper) 0%, rgba(247, 247, 247, .45) 100%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 24px rgba(247, 247, 247, .14));
+  opacity: clamp(0, (var(--fp, 1) - .2) * 3, 1);
+  transform: translateY(calc(clamp(0, 1 - (var(--fp, 1) - .2) * 3, 1) * 46px));
+}
+/* Le mot en vert doit porter son PROPRE dégradé découpé sur le texte. Un
+   simple `color` ne suffit pas : quand le parent est en
+   `background-clip: text`, Chrome peint l'enfant en aplat sur toute sa
+   boîte au lieu de ses seules lettres. */
+.foot-title em {
+  font-style: normal;
+  background: linear-gradient(180deg, var(--accent) 0%, rgba(var(--green-raw), .6) 100%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.foot-lead {
+  max-width: 46ch;
+  margin: 0 0 38px;
+  color: var(--f-mute);
+  font-size: 1rem;
+  opacity: clamp(0, (var(--fp, 1) - .27) * 3, 1);
+}
+
+.foot-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+  opacity: clamp(0, (var(--fp, 1) - .34) * 3, 1);
+  transform: translateY(calc(clamp(0, 1 - (var(--fp, 1) - .34) * 3, 1) * 40px));
+}
+.foot-row-pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+}
+
+.foot-cinema .foot-zone {
+  max-width: 62ch;
+  margin: 26px 0 0;
+  font-size: .82rem;
+  line-height: 1.65;
+  color: var(--f-mute);
+}
+
+/* --- barre du bas --- */
+.foot-cinema .foot-base {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px;
+  padding-bottom: 30px;
+  font-family: var(--font-mono);
+  font-size: .58rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--f-mute);
+}
+.foot-cinema .foot-base a { color: var(--f-mute); text-decoration: none; border-bottom: 1px solid transparent; }
+.foot-cinema .foot-base a:hover { color: var(--paper); border-bottom-color: var(--accent); }
+
+.foot-badge { padding: 12px 22px; cursor: default; }
+.foot-badge span { font-family: var(--font-mono); font-size: .58rem; letter-spacing: .12em; text-transform: uppercase; color: var(--f-mute); }
+.foot-badge strong { font-family: var(--font-display); font-size: .8rem; letter-spacing: 0; text-transform: none; color: var(--paper); }
+.foot-badge .foot-heart {
+  color: var(--accent);
+  animation: foot-heart 2.4s cubic-bezier(.25, 1, .5, 1) infinite;
+}
+@keyframes foot-heart {
+  0%, 100% { transform: scale(1); }
+  15%, 45% { transform: scale(1.22); }
+  30%      { transform: scale(1); }
+}
+
+.foot-top {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  cursor: pointer;
+}
+.foot-top svg { width: 19px; height: 19px; transition: transform .3s var(--ease); }
+.foot-top:hover svg { transform: translateY(-5px); }
+
+/* --- petits écrans : le rideau est abandonné ----------------------------
+   Un élément fixe de la hauteur de la fenêtre coûte cher en repeint sur
+   mobile, et les barres d'adresse mouvantes d'iOS font sauter la hauteur.
+   Le pied redevient un bloc normal ; il garde son décor, pas son rideau. */
+@media (max-width: 860px) {
+  .foot-reveal { height: auto; min-height: 0; }
+  .foot-cinema {
+    position: relative;
+    height: auto;
+    min-height: 0;
+    padding-top: 132px;
+  }
+  .foot-main { margin-top: 0; padding: 0 8px 54px; }
+  .foot-marquee { top: 54px; }
+  .foot-giant { font-size: 42vw; bottom: -2vh; }
+  .foot-cinema .foot-base { justify-content: center; text-align: center; }
+  .foot-pill-lg { padding: 16px 26px; font-size: .92rem; }
+}
+
 /* ---------- barre de progression ---------- */
 .progress {
   position: fixed;
@@ -1251,13 +1566,6 @@ textarea { min-height: 110px; resize: vertical; }
   z-index: 100;
   background: transparent;
 }
-.foot-zone {
-  margin: 14px 0 0;
-  max-width: 34ch;
-  font-size: .86rem;
-  color: var(--chalk-mute);
-}
-
 .progress-fill {
   height: 100%;
   width: 0;
@@ -1328,6 +1636,13 @@ input:focus-visible, textarea:focus-visible { outline-offset: 1px; }
   .browser-body > div > *, .bw-cards span { animation: none; }
   .cursor { display: none; }
   .magnetic { transform: none; }
+
+  /* Pied cinématique : le décor reste, le mouvement disparaît. Les blocs
+     sont forcés à leur état final, sinon ils resteraient invisibles —
+     leur opacité dépend d'une progression que main.js n'écrit plus. */
+  .foot-aurora, .foot-marquee-track, .foot-badge .foot-heart { animation: none; }
+  .foot-giant, .foot-title, .foot-lead, .foot-actions { opacity: 1; transform: none; }
+  .foot-giant { transform: translateX(-50%); }
 }
 
 /* ------------------------------------------------------------------
@@ -1390,16 +1705,3 @@ input:focus-visible, textarea:focus-visible { outline-offset: 1px; }
 /* Bouton déguisé en lien de pied de page : « Gérer les cookies » doit
    agir sans navigation, mais rester visuellement un lien parmi les
    autres. Un <a href="#"> aurait sali l'URL et cassé le retour arrière. */
-.foot-link {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  font: inherit;
-  letter-spacing: inherit;
-  text-transform: inherit;
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.foot-link:hover { color: var(--chalk); }
